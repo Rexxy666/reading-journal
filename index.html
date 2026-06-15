@@ -772,12 +772,7 @@
 <!-- ═══════════════ VIEW: CHAPTER DETAIL ═══════════════ -->
 <div class="view" id="view-chapter">
   <div id="chapter-hero-content"></div>
-  <div class="detail-tabs">
-    <div class="detail-tab active" onclick="switchTab('structured')">整理筆記</div>
-    <div class="detail-tab" onclick="switchTab('raw')">原始記錄</div>
-  </div>
-  <div class="tab-content active" id="tab-structured"></div>
-  <div class="tab-content" id="tab-raw"></div>
+  <div id="chapter-body-content"></div>
   <div class="danger-zone" style="display:flex; flex-direction:column; gap:10px;">
     <button class="btn-ghost" style="margin-top:0;" onclick="showEditChapter()">✏️ 編輯此章節</button>
     <button class="btn-danger" onclick="deleteCurrentChapter()">刪除此章節</button>
@@ -811,15 +806,11 @@
       <input class="form-input" id="input-chapter-title" type="text" placeholder="例：攻心計" maxlength="20">
     </div>
     <div class="form-group">
-      <label class="form-label">核心關鍵字（每行一個）</label>
-      <textarea class="form-textarea" id="input-chapter-keywords" placeholder="例：&#10;理解、尊重&#10;真誠&#10;投其所好" style="min-height:100px;"></textarea>
-      <div class="form-hint">這些關鍵字會顯示在心得頂部</div>
+      <label class="form-label">原始筆記</label>
+      <textarea class="form-textarea" id="input-chapter-notes" placeholder="把手寫筆記、劃線段落、學到的東西都寫在這裡..." style="min-height:200px;"></textarea>
+      <div class="form-hint">AI 會自動幫你整理成結構化心得</div>
     </div>
-    <div class="form-group">
-      <label class="form-label">詳細心得 / 筆記</label>
-      <textarea class="form-textarea" id="input-chapter-notes" placeholder="把你的想法、劃線段落、學到的東西都寫在這裡..."></textarea>
-    </div>
-    <button class="btn-primary" onclick="saveChapter()">儲存心得</button>
+    <button class="btn-primary" onclick="saveChapter()">儲存並整理</button>
     <button class="btn-ghost" onclick="navBack()">取消</button>
   </div>
   <div class="bottom-pad"></div>
@@ -834,15 +825,11 @@
       <input class="form-input" id="edit-chapter-title" type="text" maxlength="20">
     </div>
     <div class="form-group">
-      <label class="form-label">核心關鍵字（每行一個）</label>
-      <textarea class="form-textarea" id="edit-chapter-keywords" style="min-height:100px;"></textarea>
-      <div class="form-hint">這些關鍵字會顯示在心得頂部</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">詳細心得 / 筆記</label>
+      <label class="form-label">原始筆記</label>
       <textarea class="form-textarea" id="edit-chapter-notes" style="min-height:200px;"></textarea>
+      <div class="form-hint">儲存後 AI 會重新整理筆記內容</div>
     </div>
-    <button class="btn-primary" onclick="updateChapter()">儲存修改</button>
+    <button class="btn-primary" onclick="updateChapter()">儲存並重新整理</button>
     <button class="btn-ghost" onclick="navBack()">取消</button>
   </div>
   <div class="bottom-pad"></div>
@@ -1118,6 +1105,38 @@ function renderBook() {
   `).join('');
 }
 
+/* ─────────── AI ANALYSIS ─────────── */
+async function analyzeNotes(title, notes) {
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: `你是一個讀書筆記整理助手。使用者會給你一個章節標題和原始筆記，請分析並輸出 JSON（不要有任何其他文字）：
+{
+  "keywords": ["關鍵詞1", "關鍵詞2", "關鍵詞3"],
+  "tactics": [
+    { "ctx": "情境標籤", "main": "策略名稱", "sub": "詳細說明" }
+  ],
+  "techniques": [
+    { "name": "技法名稱", "badge": "分類標籤", "body": "說明內容", "flow": ["步驟1", "步驟2"] }
+  ]
+}
+keywords 最多 5 個，tactics 和 techniques 各視內容決定數量，flow 若無流程則為空陣列。請用繁體中文。`,
+        messages: [{ role: 'user', content: `章節：${title}\n\n筆記：\n${notes}` }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '{}';
+    return JSON.parse(text.replace(/```json|```/g, '').trim());
+  } catch(e) {
+    console.error('AI analysis failed', e);
+    return { keywords: [], tactics: [], techniques: [] };
+  }
+}
+
 /* ─────────── CHAPTER DETAIL ─────────── */
 function openChapter(chapterId) {
   state.chapterId = chapterId;
@@ -1130,8 +1149,7 @@ function renderChapter() {
   const ch = currentChapter();
   if (!ch) return;
 
-  const heroEl = document.getElementById('chapter-hero-content');
-  heroEl.innerHTML = `
+  document.getElementById('chapter-hero-content').innerHTML = `
     <div class="chapter-hero">
       <div class="chapter-hero-top">
         <div class="chapter-seal-lg">${sealText(ch.title)}</div>
@@ -1144,17 +1162,21 @@ function renderChapter() {
     </div>
   `;
 
-  /* Structured Tab */
+  const bodyEl = document.getElementById('chapter-body-content');
+
+  // Keywords
   const kwHTML = (ch.keywords && ch.keywords.length > 0)
     ? `<div class="note-section"><div class="note-section-label">核心關鍵字</div><div class="note-tag-row">
         ${ch.keywords.filter(k => k.trim()).map(k => `<div class="note-tag"><span class="note-tag-icon">&#x2665;</span><span class="note-tag-text">${esc(k.trim())}</span></div>`).join('')}
       </div></div>` : '';
 
+  // Tactics
   const tacticsHTML = (ch.tactics && ch.tactics.length > 0)
     ? `<div class="note-section"><div class="note-section-label">因人制宜策略</div><div class="tactic-list">
         ${ch.tactics.map(t => `<div class="tactic-item"><span class="tactic-ctx">${esc(t.ctx)}</span><div class="tactic-content"><div class="tactic-main">${esc(t.main)}</div><div class="tactic-sub">${esc(t.sub)}</div></div></div>`).join('')}
       </div></div>` : '';
 
+  // Techniques
   const techHTML = (ch.techniques && ch.techniques.length > 0)
     ? `<div class="note-section"><div class="note-section-label">進階技法</div>
         ${ch.techniques.map(t => `
@@ -1168,26 +1190,11 @@ function renderChapter() {
           </div>`).join('')}
       </div>` : '';
 
-  document.getElementById('tab-structured').innerHTML = kwHTML + tacticsHTML + techHTML + '<div class="bottom-pad"></div>';
-
-  /* Raw Tab */
+  // Raw notes
   const rawHTML = ch.notes
-    ? `<div class="note-section"><div class="note-section-label">原始筆記</div><div class="raw-notes">${esc(ch.notes)}</div></div><div class="bottom-pad"></div>`
-    : `<div class="empty-state"><div class="empty-icon">📝</div><div class="empty-title">沒有原始筆記</div></div>`;
-  document.getElementById('tab-raw').innerHTML = rawHTML;
+    ? `<div class="note-section"><div class="note-section-label">原始筆記</div><div class="raw-notes">${esc(ch.notes)}</div></div>` : '';
 
-  /* Reset tab */
-  document.querySelectorAll('.detail-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
-  document.querySelectorAll('.tab-content').forEach((t, i) => t.classList.toggle('active', i === 0));
-}
-
-function switchTab(name) {
-  const tabs = document.querySelectorAll('.detail-tab');
-  const contents = document.querySelectorAll('.tab-content');
-  const order = ['structured', 'raw'];
-  const idx = order.indexOf(name);
-  tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
-  contents.forEach((t, i) => t.classList.toggle('active', i === idx));
+  bodyEl.innerHTML = kwHTML + tacticsHTML + techHTML + rawHTML;
 }
 
 /* ─────────── ADD BOOK ─────────── */
@@ -1211,30 +1218,38 @@ async function saveBook() {
 /* ─────────── ADD CHAPTER ─────────── */
 function showAddChapter() {
   document.getElementById('input-chapter-title').value = '';
-  document.getElementById('input-chapter-keywords').value = '';
   document.getElementById('input-chapter-notes').value = '';
   const book = currentBook();
-  if (book) document.getElementById('add-chapter-form-title').textContent = '《' + book.title + '》\n新增章節心得';
+  if (book) document.getElementById('add-chapter-form-title').textContent = '《' + book.title + '》新增章節心得';
   showView('add-chapter');
 }
 
 async function saveChapter() {
   const title = document.getElementById('input-chapter-title').value.trim();
-  if (!title) { showToast('請輸入章節名稱'); return; }
-  const keywords = document.getElementById('input-chapter-keywords').value.split('\n').map(k => k.trim()).filter(Boolean);
   const notes = document.getElementById('input-chapter-notes').value.trim();
+  if (!title) { showToast('請輸入章節名稱'); return; }
+
+  const btn = document.querySelector('#view-add-chapter .btn-primary');
+  btn.textContent = '🤖 AI 整理中...';
+  btn.disabled = true;
+
   const today = new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+  const analysis = notes ? await analyzeNotes(title, notes) : { keywords: [], tactics: [], techniques: [] };
 
   const data = _cache;
   const book = data.books.find(b => b.id === state.bookId);
   if (!book) return;
 
   book.chapters.push({
-    id: uid(), title, date: today,
-    keywords, notes,
-    tactics: [], techniques: []
+    id: uid(), title, date: today, notes,
+    keywords: analysis.keywords || [],
+    tactics: analysis.tactics || [],
+    techniques: analysis.techniques || []
   });
+
   await saveData(data);
+  btn.textContent = '儲存並整理';
+  btn.disabled = false;
   renderBook();
   showToast('✍️ 已儲存「' + title + '」');
   navBack();
@@ -1245,16 +1260,20 @@ function showEditChapter() {
   const ch = currentChapter();
   if (!ch) return;
   document.getElementById('edit-chapter-title').value = ch.title || '';
-  document.getElementById('edit-chapter-keywords').value = (ch.keywords || []).join('\n');
   document.getElementById('edit-chapter-notes').value = ch.notes || '';
   showView('edit-chapter');
 }
 
 async function updateChapter() {
   const title = document.getElementById('edit-chapter-title').value.trim();
-  if (!title) { showToast('請輸入章節名稱'); return; }
-  const keywords = document.getElementById('edit-chapter-keywords').value.split('\n').map(k => k.trim()).filter(Boolean);
   const notes = document.getElementById('edit-chapter-notes').value.trim();
+  if (!title) { showToast('請輸入章節名稱'); return; }
+
+  const btn = document.querySelector('#view-edit-chapter .btn-primary');
+  btn.textContent = '🤖 AI 重新整理中...';
+  btn.disabled = true;
+
+  const analysis = notes ? await analyzeNotes(title, notes) : { keywords: [], tactics: [], techniques: [] };
 
   const data = _cache;
   const book = data.books.find(b => b.id === state.bookId);
@@ -1263,12 +1282,16 @@ async function updateChapter() {
   if (!ch) return;
 
   ch.title = title;
-  ch.keywords = keywords;
   ch.notes = notes;
+  ch.keywords = analysis.keywords || [];
+  ch.tactics = analysis.tactics || [];
+  ch.techniques = analysis.techniques || [];
 
   await saveData(data);
+  btn.textContent = '儲存並重新整理';
+  btn.disabled = false;
   renderChapter();
-  showToast('✅ 已儲存修改');
+  showToast('✅ 已儲存並重新整理');
   navBack();
 }
 
@@ -1330,7 +1353,6 @@ window.saveChapter = saveChapter;
 window.updateChapter = updateChapter;
 window.deleteCurrentBook = deleteCurrentBook;
 window.deleteCurrentChapter = deleteCurrentChapter;
-window.switchTab = switchTab;
 
 init();
 </script>
