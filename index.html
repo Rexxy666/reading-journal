@@ -778,7 +778,8 @@
   </div>
   <div class="tab-content active" id="tab-structured"></div>
   <div class="tab-content" id="tab-raw"></div>
-  <div class="danger-zone">
+  <div class="danger-zone" style="display:flex; flex-direction:column; gap:10px;">
+    <button class="btn-ghost" style="margin-top:0;" onclick="showEditChapter()">✏️ 編輯此章節</button>
     <button class="btn-danger" onclick="deleteCurrentChapter()">刪除此章節</button>
   </div>
   <div class="bottom-pad"></div>
@@ -824,7 +825,28 @@
   <div class="bottom-pad"></div>
 </div>
 
-<script type="module">
+<!-- ═══════════════ VIEW: EDIT CHAPTER ═══════════════ -->
+<div class="view" id="view-edit-chapter">
+  <div class="form-view">
+    <div class="form-title">編輯章節心得</div>
+    <div class="form-group">
+      <label class="form-label">章節名稱</label>
+      <input class="form-input" id="edit-chapter-title" type="text" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label">核心關鍵字（每行一個）</label>
+      <textarea class="form-textarea" id="edit-chapter-keywords" style="min-height:100px;"></textarea>
+      <div class="form-hint">這些關鍵字會顯示在心得頂部</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">詳細心得 / 筆記</label>
+      <textarea class="form-textarea" id="edit-chapter-notes" style="min-height:200px;"></textarea>
+    </div>
+    <button class="btn-primary" onclick="updateChapter()">儲存修改</button>
+    <button class="btn-ghost" onclick="navBack()">取消</button>
+  </div>
+  <div class="bottom-pad"></div>
+</div>
 /* ─────────── FIREBASE SETUP ─────────── */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -976,7 +998,8 @@ function showView(name, pushHistory = true) {
     'book': currentBook()?.title || '書本',
     'chapter': currentChapter()?.title || '章節',
     'add-book': '新增書本',
-    'add-chapter': '章節心得'
+    'add-chapter': '章節心得',
+    'edit-chapter': '編輯心得'
   };
   title.textContent = titles[name] || '讀書日誌';
 
@@ -1215,7 +1238,39 @@ async function saveChapter() {
   navBack();
 }
 
-/* ─────────── DELETE ─────────── */
+/* ─────────── EDIT CHAPTER ─────────── */
+function showEditChapter() {
+  const ch = currentChapter();
+  if (!ch) return;
+  document.getElementById('edit-chapter-title').value = ch.title || '';
+  document.getElementById('edit-chapter-keywords').value = (ch.keywords || []).join('\n');
+  document.getElementById('edit-chapter-notes').value = ch.notes || '';
+  showView('edit-chapter');
+}
+
+async function updateChapter() {
+  const title = document.getElementById('edit-chapter-title').value.trim();
+  if (!title) { showToast('請輸入章節名稱'); return; }
+  const keywords = document.getElementById('edit-chapter-keywords').value.split('\n').map(k => k.trim()).filter(Boolean);
+  const notes = document.getElementById('edit-chapter-notes').value.trim();
+
+  const data = _cache;
+  const book = data.books.find(b => b.id === state.bookId);
+  if (!book) return;
+  const ch = book.chapters.find(c => c.id === state.chapterId);
+  if (!ch) return;
+
+  ch.title = title;
+  ch.keywords = keywords;
+  ch.notes = notes;
+
+  await saveData(data);
+  renderChapter();
+  showToast('✅ 已儲存修改');
+  navBack();
+}
+
+
 async function deleteCurrentBook() {
   const book = currentBook();
   if (!book) return;
@@ -1267,8 +1322,10 @@ window.navBack = navBack;
 window.navAdd = navAdd;
 window.showAddBook = showAddBook;
 window.showAddChapter = showAddChapter;
+window.showEditChapter = showEditChapter;
 window.saveBook = saveBook;
 window.saveChapter = saveChapter;
+window.updateChapter = updateChapter;
 window.deleteCurrentBook = deleteCurrentBook;
 window.deleteCurrentChapter = deleteCurrentChapter;
 window.switchTab = switchTab;
