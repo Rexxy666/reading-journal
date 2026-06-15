@@ -934,6 +934,28 @@ const DEFAULT_CH_2 = {
   ]
 };
 
+const DEFAULT_CH_3 = {
+  id: 'default_ch_3',
+  title: '借勢計',
+  number: 3,
+  date: '2026年6月15日',
+  keywords: ['整合資源', '借勢五維度', '造勢', '辦人思維', '你是自己的貴人'],
+  notes: `一、 核心觀念：不要單打獨鬥\n在面對各種事務時，能夠巧妙地利用周圍的環境、條件和趨勢來達成目標。\n核心思維：不要單打獨鬥，要善於整合資源。\n具體作法：學會調動人力，與各行業佼佼者合作，借鑑前人智慧＆經驗。\n\n二、 借勢的五大維度\n1. 選擇好平台（靠山）：拓展視野、人脈、技能、資源。好平台是放大器。\n2. 借「名人」之勢：名人效應、引用名人言論，增強說服力。\n3. 借「客戶」之勢：①真誠有信譽 ②不卑不亢 ③自然應對 ④不搶客戶風頭，做好輔助角色。\n4. 借「貴人」之勢：①保持真實 ②品格 ③上進心、樂觀 ④知恩圖報。精髓：先提升自己，你就是自己最好的貴人。\n5. 借「社群」之勢：①讓自己變強 ②刷新存在感，提升能力標籤 ③價值交換 ④看見圈子需求，成為合作夥伴。\n\n三、 進階：從「借勢」到「造勢」\n1. 蹭熱點：迅速反應，從創新角度、話題性、品牌相關性切入，保持客觀避免過度。\n2. 為什麼造勢：無勢可借時，需無中生有。少說多做，提升能力地位，人微言輕影響信譽。\n3. 如何造勢（6步驟）：①平日累積人情 ②預告對方給心理準備 ③注意邊際 ④做好最壞打算 ⑤闡述輕重緩急 ⑥訴其利益。\n核心邏輯：辦事就是「辦人」。先立勢把人辦了，再以勢制事，事半功倍。`,
+  tactics: [
+    { ctx: '借平台', main: '選擇好的靠山與平台', sub: '好平台是放大器，能放大個人價值、努力和眼界，拓展視野、人脈、技能與資源' },
+    { ctx: '借名人', main: '善用名人效應', sub: '引用名人言論或觀點支持自己的立場，迅速提升個人知名度與說服力' },
+    { ctx: '借客戶', main: '真誠不卑不亢，做好輔助', sub: '與客戶互動要真誠有信譽、不卑不亢、自然應對，不搶風頭才能相互借勢' },
+    { ctx: '借貴人', main: '先提升自己，再求貴人相助', sub: '品格、上進心、知恩圖報是吸引貴人的前提。核心：你就是自己最好的貴人' },
+    { ctx: '借社群', main: '價值交換，成為圈子的合作夥伴', sub: '觀察圈子需求，提升能力標籤，刷新存在感，讓自己成為圈內不可缺少的角色' }
+  ],
+  techniques: [
+    { name: '借勢五大維度', badge: '策略框架', body: '平台、名人、客戶、貴人、社群——五個維度全面借力，不依賴單一資源，靈活組合使用。', flow: ['選好平台', '借名人背書', '借客戶信任', '借貴人資源', '借社群影響力'] },
+    { name: '蹭熱點四角度', badge: '造勢技巧', body: '事件發生後迅速反應，從創新角度、話題性、品牌相關性、輿論風險四個角度切入，保持客觀尊重事實，避免過度蹭熱點反傷自身。', flow: [] },
+    { name: '造勢六步驟', badge: '進階操作', body: '無勢可借時主動造勢，讓自己處於有利局面，吸引注意力提升影響力。', flow: ['累積人情', '預告對方', '注意邊際', '最壞打算', '闡述輕重緩急', '訴其利益'] },
+    { name: '辦事即辦人', badge: '核心邏輯', body: '不要就事論事，要用「辦人」的思維辦事。在辦事之前先透過「立勢」把人辦了，以勢制事，事半功倍。', flow: ['先立勢', '把人辦了', '以勢制事', '事半功倍'] }
+  ]
+};
+
 /* ─────────── SEED & MIGRATE ─────────── */
 async function seedAndMigrate() {
   const data = await loadData();
@@ -945,7 +967,7 @@ async function seedAndMigrate() {
       title: '辦事兵法',
       author: '',
       createdAt: new Date().toISOString(),
-      chapters: [DEFAULT_CH_1, DEFAULT_CH_2]
+      chapters: [DEFAULT_CH_1, DEFAULT_CH_2, DEFAULT_CH_3]
     });
     changed = true;
   } else {
@@ -964,6 +986,14 @@ async function seedAndMigrate() {
           ch2.techniques = DEFAULT_CH_2.techniques;
           changed = true;
         }
+      }
+      // Find user-added ch3 (借勢計) and inject structured data if missing
+      const ch3 = book.chapters.find(c => c.title === '借勢計');
+      if (ch3 && (!ch3.tactics || ch3.tactics.length === 0)) {
+        ch3.keywords = DEFAULT_CH_3.keywords;
+        ch3.tactics = DEFAULT_CH_3.tactics;
+        ch3.techniques = DEFAULT_CH_3.techniques;
+        changed = true;
       }
     }
   }
