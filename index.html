@@ -919,18 +919,18 @@ const DEFAULT_CH_2 = {
   title: '撥動計',
   number: 2,
   date: '2026年6月14日',
-  keywords: ['收斂鋒芒', '保持同步', '放低身段', '主動待人'],
-  notes: '① 要做配角的胸懷 → 滿足對方被尊重之心理\n② 切勿過度宣傳自己 → 收斂鋒芒\n③ 與他人盡量保持同步 → 拉近距離，但不要太近（亦不可太遠，保持適當距離感）\n④ 不與人爭勁\n   → 若遇到「杠精」：閉口不言 / 提出自身觀點（準確描述）\n   → 故意反駁 → 承認錯誤 → 認同對方\n⑤ 確保持「道不同，不相謀」→ 應該做多行業人脈\n⑥ 變不到的人心 → 提升關係對能力\n   ① 互惠　② 用原則關鍵事　③ 用急迫性（廣泛）意識到重要性\n⑦ 放低身段，尊重他人，待人如待己，要有禮貌\n⑧ 主動待人，對人熱情、誠實、寬容、尊重',
+  keywords: ['收斂鋒芒', '保持距離感', '不與人爭勁', '廣結人脈', '主動待人'],
+  notes: '① 要做配角的胸懷 → 滿足對方被尊重之心理\n② 切勿過度宣傳自己 → 收斂鋒芒\n③ 與他人盡量保持同步 → 拉近距離，但不要太近（亦不可太遠，保持適當距離感）\n④ 不與人爭勁\n   → 若遇到「杠精」：閉口不言 / 提出自身觀點（準確描述）\n   → 故意反駁 → 承認錯誤 → 認同對方\n⑤ 確保持「道不同，不相謀」→ 應該做多行業人脈\n⑥ 變不到的人心 → 提升關係對能力\n   ① 互惠　② 用原則關鍵事　③ 用急迫性讓對方意識到重要性\n⑦ 放低身段，尊重他人，待人如待己，要有禮貌\n⑧ 主動待人，對人熱情、誠實、寬容、尊重',
   tactics: [
-    { ctx: '角色定位', main: '做配角的胸懷', sub: '滿足對方被尊重之心理，不搶風頭' },
-    { ctx: '距離感', main: '與他人保持同步', sub: '拉近距離但不可太近也不可太遠，維持適當的關係距離' },
-    { ctx: '遇杠精', main: '閉口不言或準確提出自身觀點', sub: '面對挑釁，可選擇沉默；若回應，則先故意反駁，再承認錯誤，最後認同對方' },
-    { ctx: '人際原則', main: '道不同不相謀，但廣結善緣', sub: '價值觀不同可以疏遠，但應盡量拓展多行業人脈' }
+    { ctx: '角色定位', main: '做配角的胸懷', sub: '主動退讓主角位置，滿足對方被尊重的心理，讓對方感覺受重視' },
+    { ctx: '距離拿捏', main: '與他人保持同步', sub: '拉近距離但不可太近也不可太遠，同步對方的節奏與狀態，維持適當的關係溫度' },
+    { ctx: '遇到杠精', main: '閉口不言或準確表達立場', sub: '第一選擇是沉默；若要回應，先故意反駁，再承認錯誤，最後認同對方，讓對方感覺贏了' },
+    { ctx: '人脈建立', main: '道不同不相謀，但廣結善緣', sub: '價值觀不合可以疏遠，但不要樹敵，應盡量拓展跨行業人脈，機會往往來自意外的連結' }
   ],
   techniques: [
-    { name: '收斂鋒芒', badge: '自我管理', body: '切勿過度宣傳自己，讓對方感受到自己的重要性，而非被你的光芒壓過。', flow: [] },
-    { name: '提升關係能力', badge: '三大工具', body: '面對難以撥動的人心，善用三個工具：互惠原則、在關鍵事上展現原則、以急迫性讓對方意識到你的重要性。', flow: ['互惠', '關鍵時刻展現原則', '製造急迫性', '讓對方感受到你的重要'] },
-    { name: '主動待人四字訣', badge: '日常態度', body: '主動待人：熱情、誠實、寬容、尊重。放低身段，待人如待己，是人際關係的長久之道。', flow: [] }
+    { name: '收斂鋒芒', badge: '自我管理', body: '切勿過度宣傳自己的能力或成就。讓對方感受到自己的重要性，而不是被你的光芒壓過，是長期關係的基礎。', flow: [] },
+    { name: '提升關係能力三工具', badge: '影響力', body: '面對難以撥動的人心，善用三個工具來建立影響力。', flow: ['互惠原則', '關鍵時刻展現原則', '製造急迫性', '讓對方感受到你的重要'] },
+    { name: '主動待人四字訣', badge: '日常態度', body: '主動、熱情、誠實、寬容——這四個態度是人際關係的長期投資。放低身段，待人如待己，尊重是最低成本、最高回報的社交策略。', flow: [] }
   ]
 };
 
@@ -939,7 +939,6 @@ async function seedAndMigrate() {
   const data = await loadData();
   let changed = false;
 
-  // No books at all → seed everything
   if (data.books.length === 0) {
     data.books.push({
       id: 'default_book_1',
@@ -950,11 +949,22 @@ async function seedAndMigrate() {
     });
     changed = true;
   } else {
-    // Already have the book → make sure ch2 exists
     const book = data.books.find(b => b.id === 'default_book_1');
-    if (book && !book.chapters.some(c => c.id === 'default_ch_2')) {
-      book.chapters.push(DEFAULT_CH_2);
-      changed = true;
+    if (book) {
+      // Add ch2 if missing
+      if (!book.chapters.some(c => c.id === 'default_ch_2')) {
+        book.chapters.push(DEFAULT_CH_2);
+        changed = true;
+      } else {
+        // Force-update ch2 tactics/techniques if still empty
+        const ch2 = book.chapters.find(c => c.id === 'default_ch_2');
+        if (ch2 && (!ch2.tactics || ch2.tactics.length === 0)) {
+          ch2.keywords = DEFAULT_CH_2.keywords;
+          ch2.tactics = DEFAULT_CH_2.tactics;
+          ch2.techniques = DEFAULT_CH_2.techniques;
+          changed = true;
+        }
+      }
     }
   }
 
