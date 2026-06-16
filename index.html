@@ -916,7 +916,7 @@ const DEFAULT_CH_1 = {
 
 const DEFAULT_CH_2 = {
   id: 'default_ch_2',
-  title: '撥動計',
+  title: '協和計',
   number: 2,
   date: '2026年6月14日',
   keywords: ['收斂鋒芒', '保持距離感', '不與人爭勁', '廣結人脈', '主動待人'],
@@ -1011,9 +1011,10 @@ async function seedAndMigrate() {
       const ch1 = book.chapters.find(c => c.id === 'default_ch_1');
       inject(ch1, DEFAULT_CH_1);
 
-      // CH2: fixed id OR position [1] (handles renamed chapters like 協和計)
+      // CH2: fixed id OR position [1] (handles 協和計)
       let ch2 = book.chapters.find(c => c.id === 'default_ch_2');
-      if (!ch2) ch2 = book.chapters[1]; // fallback to position
+      if (!ch2) ch2 = book.chapters.find(c => c.title === '協和計');
+      if (!ch2) ch2 = book.chapters[1];
       inject(ch2, DEFAULT_CH_2);
 
       // CH3: by title 借勢計 OR position [2]
