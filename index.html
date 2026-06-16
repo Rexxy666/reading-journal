@@ -984,6 +984,7 @@ async function seedAndMigrate() {
   let changed = false;
 
   if (data.books.length === 0) {
+    // Brand new user → seed all chapters
     data.books.push({
       id: 'default_book_1',
       title: '辦事兵法',
@@ -995,35 +996,38 @@ async function seedAndMigrate() {
   } else {
     const book = data.books.find(b => b.id === 'default_book_1');
     if (book) {
-      // Add ch2 if missing
-      if (!book.chapters.some(c => c.id === 'default_ch_2')) {
-        book.chapters.push(DEFAULT_CH_2);
-        changed = true;
-      } else {
-        // Force-update ch2 tactics/techniques if still empty
-        const ch2 = book.chapters.find(c => c.id === 'default_ch_2');
-        if (ch2 && (!ch2.tactics || ch2.tactics.length === 0)) {
-          ch2.keywords = DEFAULT_CH_2.keywords;
-          ch2.tactics = DEFAULT_CH_2.tactics;
-          ch2.techniques = DEFAULT_CH_2.techniques;
+
+      // Helper: inject structured fields into a chapter if tactics are missing
+      const inject = (ch, defaults) => {
+        if (ch && (!ch.tactics || ch.tactics.length === 0)) {
+          ch.keywords  = defaults.keywords;
+          ch.tactics   = defaults.tactics;
+          ch.techniques = defaults.techniques;
           changed = true;
         }
-      }
-      // Find user-added ch3 (借勢計) and inject structured data if missing
-      const ch3 = book.chapters.find(c => c.title === '借勢計');
-      if (ch3 && (!ch3.tactics || ch3.tactics.length === 0)) {
-        ch3.keywords = DEFAULT_CH_3.keywords;
-        ch3.tactics = DEFAULT_CH_3.tactics;
-        ch3.techniques = DEFAULT_CH_3.techniques;
+      };
+
+      // CH1: fixed id
+      const ch1 = book.chapters.find(c => c.id === 'default_ch_1');
+      inject(ch1, DEFAULT_CH_1);
+
+      // CH2: fixed id OR position [1] (handles renamed chapters like 協和計)
+      let ch2 = book.chapters.find(c => c.id === 'default_ch_2');
+      if (!ch2) ch2 = book.chapters[1]; // fallback to position
+      inject(ch2, DEFAULT_CH_2);
+
+      // CH3: by title 借勢計 OR position [2]
+      let ch3 = book.chapters.find(c => c.title === '借勢計');
+      if (!ch3) ch3 = book.chapters[2];
+      inject(ch3, DEFAULT_CH_3);
+
+      // CH4: by title 奇正計 OR position [3] — add if completely missing
+      let ch4 = book.chapters.find(c => c.title === '奇正計');
+      if (!ch4 && book.chapters.length < 4) {
+        book.chapters.push(DEFAULT_CH_4);
         changed = true;
-      }
-      // Find user-added ch4 (奇正計) and inject structured data if missing
-      const ch4 = book.chapters.find(c => c.title === '奇正計');
-      if (ch4 && (!ch4.tactics || ch4.tactics.length === 0)) {
-        ch4.keywords = DEFAULT_CH_4.keywords;
-        ch4.tactics = DEFAULT_CH_4.tactics;
-        ch4.techniques = DEFAULT_CH_4.techniques;
-        changed = true;
+      } else {
+        inject(ch4, DEFAULT_CH_4);
       }
     }
   }
