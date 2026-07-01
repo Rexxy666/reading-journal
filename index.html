@@ -1092,6 +1092,8 @@ const DEFAULT_CH_9 = {
     { name: '可靠員工四行為', badge: '向上管理', body: '上司關注結果，員工展現過程。做事有條理（輕重緩急）、交叉確認細節（1→2→1 check）、請示時給選擇題、及時匯報保持溝通。', flow: ['釐清輕重緩急', '交叉確認細節', '請示給選擇題', '及時匯報'] }
   ]
 };
+
+async function seedAndMigrate() {
   const data = await loadData();
   let changed = false;
 
