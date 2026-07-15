@@ -350,6 +350,24 @@
   }
   .add-chapter-btn:active { background: var(--red-light); color: var(--red); }
 
+  .book-link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 1.25rem 1.25rem;
+    padding: 0.875rem;
+    background: var(--red);
+    color: #fff;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: var(--sans);
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .book-link-btn:active { opacity: 0.8; }
+
   /* ── CHAPTER DETAIL ── */
   .chapter-hero {
     background: var(--surface);
@@ -1320,6 +1338,7 @@ function renderBook() {
         <div class="book-detail-sub">${book.author ? esc(book.author) + '　' : ''}${book.chapters.length} 篇心得</div>
       </div>
     </div>
+    ${book.link ? `<a class="book-link-btn" href="${esc(book.link)}" target="_blank" rel="noopener">&#128279; 前往策略模擬網站</a>` : ''}
   `;
 
   const listEl = document.getElementById('chapter-list');
