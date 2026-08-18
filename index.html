@@ -1097,6 +1097,183 @@
   }
   .viz-empty .empty-icon { font-size: 42px; margin-bottom: 0.875rem; }
 
+  /* ── 心智圖縮放控制（桌面才顯示） ── */
+  .mm-zoom {
+    display: none;
+    margin-left: auto;
+    align-items: center;
+    gap: 2px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 3px;
+  }
+
+  .mm-zbtn {
+    min-width: 28px;
+    height: 26px;
+    border: none;
+    background: none;
+    color: var(--red);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .mm-zbtn:hover { background: var(--red-light); }
+
+  .mm-zreset {
+    font-size: 11px;
+    padding: 0 10px;
+    color: var(--text2);
+    border-left: 0.5px solid var(--border);
+    border-radius: 0 14px 14px 0;
+  }
+
+  .mm-zlabel {
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 38px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 關鍵字雲：字級以 em 計算，桌面只要改容器基準即可整體放大 */
+  .kw-cloud { font-size: 15px; }
+
+  /* ══════════════ 桌面版（>=1024px）── 手機版設定完全不受影響 ══════════════ */
+  @media (min-width: 1024px) {
+    :root { --col: 1040px; }
+
+    /* ── 內容欄寬：避免元素被拉伸到整個螢幕寬 ── */
+    .nav { padding: 0 max(2rem, calc((100% - var(--col)) / 2)); height: 58px; }
+    .nav-title { font-size: 18px; }
+
+    .home-hero,
+    .stats-row,
+    .section-head,
+    .book-card,
+    .add-book-btn,
+    .book-detail-header,
+    .book-link-btn,
+    .chapter-list-item,
+    .add-chapter-btn,
+    .chapter-hero,
+    .note-section,
+    .danger-zone,
+    .viz-wrap {
+      max-width: var(--col);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .home-hero, .stats-row, .book-detail-header, .chapter-hero {
+      border-radius: 0 0 16px 16px;
+    }
+
+    .add-book-btn, .add-chapter-btn { width: 100%; }
+
+    /* ── 分頁列：不要撐成左右各半 ── */
+    .detail-tabs { top: 58px; justify-content: center; }
+    .detail-tab {
+      flex: 0 0 180px;
+      font-size: 14px;
+      padding: 1rem 0;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── 章節標頭 ── */
+    .chapter-hero { padding: 1.75rem 2rem 2rem; }
+    .chapter-seal-lg { width: 64px; height: 64px; font-size: 14px; }
+    .chapter-title-lg { font-size: 26px; }
+    .chapter-eyebrow-sm { font-size: 12px; }
+    .chapter-date-sm { font-size: 12px; }
+
+    /* ── 圖解區塊 ── */
+    .viz-wrap { padding: 1.75rem 2rem 0; }
+    .viz-block { margin-bottom: 2.5rem; }
+    .viz-title { font-size: 17px; }
+    .viz-hint { font-size: 12px; }
+    .viz-tool { display: none !important; }
+    .mm-zoom { display: flex; }
+
+    /* 心智圖：固定高度視窗 + 拖曳平移，進場自動縮到看得見全貌 */
+    .mindmap-scroll {
+      height: min(72vh, 680px);
+      max-width: 760px;
+      margin: 0 auto;
+      overflow: auto;
+      padding: 12px;
+      cursor: grab;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .mindmap-scroll.dragging { cursor: grabbing; }
+    .mindmap-scroll svg { margin: 0 auto; }
+    /* 桌面不套用手機的「撐滿寬度」，寬度改由 JS 依縮放比設定 */
+    .mindmap-scroll.fit { overflow: auto; }
+    .mindmap-scroll.fit svg { width: auto; height: auto; }
+
+    /* 關鍵字雲 */
+    .kw-cloud { font-size: 17px; padding: 2rem 1.5rem; gap: 12px 20px; }
+
+    /* 情境對照矩陣：寬螢幕排三欄，卡片不會被拉得過長 */
+    .ctx-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+    .ctx-card-head { font-size: 14px; padding: 10px 14px; }
+    .ctx-card-body { padding: 4px 14px 12px; }
+    .ctx-main { font-size: 14.5px; }
+    .ctx-sub { font-size: 12.5px; }
+
+    /* 操作流程圖：兩欄並排，避免單卡橫向拉伸 */
+    .viz-flows {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .flowc { margin-bottom: 0; padding: 1.15rem 1.25rem 1.35rem; }
+    .flowc-name { font-size: 16px; }
+    .flowc-txt { font-size: 14px; padding: 6px 13px; }
+
+    /* 記憶卡：置中收窄，寬螢幕下不要變成一條扁長條 */
+    .fc-holder { max-width: 560px; margin: 0 auto; }
+    .fc-card { height: 260px; }
+    .fc-face { padding: 1.75rem; }
+    .fc-q { font-size: 23px; }
+    .fc-kind { font-size: 11px; }
+    .fc-tap { font-size: 12px; }
+    .fc-a-main { font-size: 17px; }
+    .fc-a-body { font-size: 14px; }
+    .fc-btn { width: 46px; height: 46px; font-size: 18px; }
+    .fc-count { font-size: 13px; }
+    .fc-shuffle { font-size: 13px; padding: 7px 20px; }
+
+    /* ── 心得分頁：同步微調，避免與圖解分頁字級斷層 ── */
+    .note-section-label { font-size: 11px; }
+    .note-tag-text { font-size: 15px; }
+    .tactic-main { font-size: 15px; }
+    .tactic-sub { font-size: 13px; }
+    .technique-name { font-size: 16px; }
+    .technique-body { font-size: 14px; }
+    .raw-notes { font-size: 14px; }
+
+    /* ── 首頁／書本頁 ── */
+    .home-heading { font-size: 30px; }
+    .home-sub { font-size: 14px; }
+    .stat-num { font-size: 26px; }
+    .book-card-title { font-size: 18px; }
+    .chapter-list-title { font-size: 16px; }
+    .empty-title { font-size: 20px; }
+
+    /* 桌面用滑鼠，補上 hover 回饋 */
+    .book-card:hover, .chapter-list-item:hover { border-color: var(--red-mid); }
+    .detail-tab:hover { color: var(--red); }
+    .fc-btn:hover:not(:disabled) { background: var(--red-light); }
+    .fc-shuffle:hover { background: var(--surface2); }
+  }
+
 </style>
 </head>
 <body>
@@ -1152,7 +1329,7 @@
 
   <div class="detail-tabs">
     <div class="detail-tab active" id="tab-btn-notes" onclick="switchChapterTab('notes')">心得</div>
-    <div class="detail-tab" id="tab-btn-viz" onclick="switchChapterTab('viz')">🗺️ 圖解</div>
+    <div class="detail-tab" id="tab-btn-viz" onclick="switchChapterTab('viz')">圖解</div>
   </div>
 
   <div class="tab-content active" id="tab-pane-notes">
@@ -1483,6 +1660,81 @@ const DEFAULT_CH_9 = {
   ]
 };
 
+/* ─────────── 高效偷懶：僕人式領導 ─────────── */
+const CH_SERVANT_LEADERSHIP = {
+  id: 'ch_servant_leadership',
+  title: '建立「僕人式領導」與「自組織團隊」提高生產力',
+  number: 1,
+  date: '2026年8月18日',
+  keywords: ['僕人式領導', '賦權', '自組織團隊', '障礙排除', '心理安全感'],
+  notes: '【核心觀點】從「命令與控制」走向「僕人式領導」\n傳統日式管理偏向微觀管理（命令與控制），將員工視為需要被監督的「受雇者」；而現代敏捷團隊（如微軟模式）則採用「僕人式領導」，將成員視為平等的「利益相關者（Stakeholder）」，透過充分賦權激發團隊的最大效能。\n\n一、領導模式與思維的轉變\n• 給目標與權限，而非下達指令\n   → 命令與控制（由上而下）：上級給予指令與限制，員工被動「等待指示」、被迫執行，扼殺了思考空間\n   → 僕人式領導（由下而上）：上級針對願景、戰略與 KPI 定立明確目標，並賦予第一線充分的權限與發揮空間，由執行成員自行思考與決定如何推進\n• 主管角色的重新定義\n   → 主管不再是發號施令的管理者，而是「支援者」與「障礙排除者」\n   → 核心任務：相信 IC（獨立貢獻者）、提供資源與支援、排除阻礙、維持整體目標與願景\n\n二、自組織團隊（Self-Organizing Teams）的運作\n• 球隊比喻：高層像球隊老闆（設定賽季目標與爭取資源）；中階像教練團（打造戰術體系、排解一線疑慮）；團隊成員像場上球員（分工互補、充分發揮）\n• 團隊成員不分上下級，大家都是夥伴、一律平等\n• 獨立商店模式（以 IC 為核心）：每位成員都像是經營一間獨立商店（或多店合作），擁有高度彈性與決策權\n• 擺脫微觀管理，改以「待辦事項清單」與「大計畫」來安排工作，讓成員自主選題與規劃時程\n• 自組織團隊的三大優勢：\n   ① 生產力提高：信任團隊自主做決定，大幅縮短前置審批與溝通內耗\n   ② 參與度與滿意度提升：讓成員在工作中樂在其中，而非被迫執行\n   ③ 採取更佳的解決方案：第一線最了解實際狀況，由實作人員決策能產出更高質量的成果\n\n三、打造健康團隊文化的關鍵體悟\n• 不急於求成，是對未來的長期投資 → 與其為了趕交期而推出不成熟的產品導致後續維護困難，不如讓團隊在良好架構下穩健產出真正有信心的成果\n• 不否定他人，營造安全且快樂的工作環境 → 建立可以互相提問、發表意見的心理安全感，包容不足並肯定每位夥伴的貢獻\n• 培養團隊的幸福感與信任 → 完全信任成員並一視同仁，將成就歸功於一線執行者，讓團隊在被尊重與被賦權的環境中發揮最大潛力',
+  tactics: [
+    { ctx: '領導模式', main: '給目標與權限，而非下達指令', sub: '上級只定義願景、戰略與 KPI，把「怎麼做」完整交還給第一線。由上而下的指令會讓人只等指示，由下而上的賦權才留得住思考空間' },
+    { ctx: '主管角色', main: '從管理者轉為支援者與障礙排除者', sub: '不再發號施令，改為相信 IC（獨立貢獻者）、提供資源與支援、排除阻礙，並持續維持整體目標與願景不走偏' },
+    { ctx: '團隊結構', main: '不分上下級，成員一律是平等的夥伴', sub: '把成員視為平等的利益相關者（Stakeholder）而非受雇者，關係從監督與被監督，變成共同對成果負責' },
+    { ctx: '工作分派', main: '用待辦清單與大計畫取代微觀管理', sub: '不指派單一任務，而是攤開待辦事項與大方向，讓成員自主選題、自行規劃時程，保留高度彈性與決策權' },
+    { ctx: '交期壓力', main: '不急於求成，把時間當成長期投資', sub: '為趕交期推出不成熟的產品，代價是後續難以維護。寧可讓團隊在良好架構下穩健產出真正有信心的成果' },
+    { ctx: '團隊互動', main: '不否定他人，先給心理安全感', sub: '建立可以互相提問、自由發表意見的環境，包容不足並具體肯定每位夥伴的貢獻，安全感是快樂工作的前提' },
+    { ctx: '成果歸屬', main: '把成就歸功於一線執行者', sub: '完全信任成員並一視同仁，讓功勞留在實作的人身上。被尊重與被賦權的團隊，才會長出幸福感與信任' }
+  ],
+  techniques: [
+    {
+      name: '命令與控制的失效鏈',
+      badge: '反面對照',
+      body: '傳統日式管理的微觀管理路徑。每多一道由上而下的限制，第一線的思考空間就少一分，最後只剩下等待指示的被動執行者。',
+      flow: ['上級下達指令', '限制執行方式', '員工等待指示', '被迫被動執行', '思考空間被扼殺']
+    },
+    {
+      name: '僕人式領導的授權鏈',
+      badge: '正面做法',
+      body: '把決策權推到最靠近問題的地方。主管的工作從「指揮」換成「鋪路」，成員因此能對成果真正負責。',
+      flow: ['定義願景與 KPI', '賦予充分權限', '一線自行決策', '主管排除障礙', '產出更佳解法']
+    },
+    {
+      name: '球隊式分層',
+      badge: '組織比喻',
+      body: '用球隊理解三層分工：各司其職但沒有上下貴賤，勝負由場上的人決定，場邊的人負責讓他們打得順。',
+      flow: ['高層＝球隊老闆：設定賽季目標、爭取資源', '中階＝教練團：打造戰術體系、排解一線疑慮', '成員＝場上球員：分工互補、充分發揮']
+    },
+    {
+      name: '獨立商店模式',
+      badge: '以 IC 為核心',
+      body: '每位成員都像在經營一間自己的獨立商店，需要時再多店合作。擁有高度彈性與決策權，也直接承接經營成果。',
+      flow: ['從待辦清單認領題目', '自主規劃時程', '需要時多店合作', '對成果直接負責']
+    },
+    {
+      name: '自組織團隊的三大優勢',
+      badge: '成效',
+      body: '① 生產力提高：信任團隊自主做決定，大幅縮短前置審批與溝通內耗。② 參與度與滿意度提升：成員在工作中樂在其中，而非被迫執行。③ 採取更佳的解決方案：第一線最了解實際狀況，由實作人員決策能產出更高質量的成果。',
+      flow: []
+    }
+  ]
+};
+
+/* 把「僕人式領導」章節補進《高效偷懶》。找不到該書時才建立，避免重複 */
+function migrateServantLeadership(data) {
+  let book = data.books.find(b => (b.title || '').includes('偷懶'));
+
+  if (!book) {
+    book = {
+      id: 'book_lazy_efficiency',
+      title: '高效偷懶',
+      author: '',
+      createdAt: new Date().toISOString(),
+      chapters: []
+    };
+    data.books.push(book);
+  }
+
+  const exists = book.chapters.some(c =>
+    c.id === CH_SERVANT_LEADERSHIP.id || (c.title || '').includes('僕人式領導')
+  );
+  if (exists) return false;
+
+  book.chapters.push({ ...CH_SERVANT_LEADERSHIP, number: book.chapters.length + 1 });
+  return true;
+}
+
 async function seedAndMigrate() {
   const data = await loadData();
   let changed = false;
@@ -1582,6 +1834,8 @@ async function seedAndMigrate() {
     }
   }
 
+  if (migrateServantLeadership(data)) changed = true;
+
   if (changed) await saveData(data);
   return data;
 }
@@ -1642,7 +1896,10 @@ function currentChapter() {
 }
 
 function sealText(title) {
-  const chars = [...title].slice(0, 4);
+  const raw = String(title || '');
+  const quoted = raw.match(/[「『]([^」』]{1,6})[」』]/);   // 標題含引號時，印章取引號內的關鍵詞
+  const base = (quoted ? quoted[1] : raw).replace(/[「」『』（）()［］\[\]，、。：:・\s]/g, '');
+  const chars = [...base].slice(0, 4);
   if (chars.length <= 2) return chars.join('<br>');
   if (chars.length === 3) return chars[0] + '<br>' + chars.slice(1).join('');
   return chars.slice(0, 2).join('') + '<br>' + chars.slice(2).join('');
@@ -2133,6 +2390,105 @@ function buildMindmap(ch, m) {
   return `<svg width="${Math.round(totalW)}" height="${Math.round(totalH)}" viewBox="0 0 ${Math.round(totalW)} ${Math.round(totalH)}" xmlns="http://www.w3.org/2000/svg">${links}${root}${nodes}</svg>`;
 }
 
+/* ─── 心智圖縮放 ───
+   手機（<1024px）：維持原本的「縮成一頁 / 放大細看」切換＋原生捲動。
+   桌面（>=1024px）：固定高度視窗，進場自動 fit 到看得見全貌，
+   之後可用 ＋/− 按鈕、⌘/Ctrl+滾輪縮放，按住拖曳平移。            */
+const DESKTOP_MQ = '(min-width: 1024px)';
+function isDesktopViz() { return window.matchMedia(DESKTOP_MQ).matches; }
+
+let mmZoom = 1;
+
+function mindmapSvg() {
+  const svg = document.querySelector('#mindmap-scroll svg');
+  if (!svg) return null;
+  return { svg, w: parseFloat(svg.getAttribute('width')) || 1, h: parseFloat(svg.getAttribute('height')) || 1 };
+}
+
+function applyMindmapZoom() {
+  const n = mindmapSvg();
+  if (!n) return;
+  n.svg.style.width = (n.w * mmZoom) + 'px';
+  n.svg.style.height = 'auto';
+  const lbl = document.getElementById('mindmap-zoom-label');
+  if (lbl) lbl.textContent = Math.round(mmZoom * 100) + '%';
+}
+
+/* 桌面：算出「寬高都塞得進視窗」的縮放比，最多放大到 1.5 倍避免字過肥 */
+function fitMindmapDesktop() {
+  const el = document.getElementById('mindmap-scroll');
+  const n = mindmapSvg();
+  if (!el || !n) return;
+  el.classList.remove('fit');
+  const availW = el.clientWidth - 24;
+  const availH = el.clientHeight - 24;
+  mmZoom = Math.max(0.35, Math.min(availW / n.w, availH / n.h, 1.5));
+  applyMindmapZoom();
+  el.scrollLeft = Math.max(0, (el.scrollWidth - el.clientWidth) / 2);
+  el.scrollTop = 0;
+
+  const hint = document.getElementById('mindmap-hint');
+  if (hint) {
+    hint.style.display = '';
+    hint.textContent = '按住拖曳可平移　⌘/Ctrl＋滾輪縮放';
+  }
+}
+
+function mindmapZoom(delta) {
+  if (!isDesktopViz()) return;
+  const el = document.getElementById('mindmap-scroll');
+  if (!el) return;
+  const cx = el.scrollLeft + el.clientWidth / 2;
+  const cy = el.scrollTop + el.clientHeight / 2;
+  const before = mmZoom;
+  mmZoom = Math.min(2.5, Math.max(0.3, +(mmZoom + delta).toFixed(3)));
+  applyMindmapZoom();
+  const k = mmZoom / before;
+  el.scrollLeft = cx * k - el.clientWidth / 2;
+  el.scrollTop = cy * k - el.clientHeight / 2;
+}
+
+function mindmapReset() { fitMindmapDesktop(); }
+
+/* 桌面互動：拖曳平移 + ⌘/Ctrl 滾輪縮放（單純滾輪保留給頁面捲動） */
+function attachMindmapPanZoom(el) {
+  if (!el || el.dataset.pz === '1') return;
+  el.dataset.pz = '1';
+
+  let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;
+
+  el.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'touch' || !isDesktopViz()) return;
+    dragging = true;
+    sx = e.clientX; sy = e.clientY;
+    sl = el.scrollLeft; st = el.scrollTop;
+    el.classList.add('dragging');
+    el.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+
+  el.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    el.scrollLeft = sl - (e.clientX - sx);
+    el.scrollTop = st - (e.clientY - sy);
+  });
+
+  const stop = e => {
+    if (!dragging) return;
+    dragging = false;
+    el.classList.remove('dragging');
+    try { el.releasePointerCapture(e.pointerId); } catch (_) {}
+  };
+  el.addEventListener('pointerup', stop);
+  el.addEventListener('pointercancel', stop);
+
+  el.addEventListener('wheel', e => {
+    if (!isDesktopViz() || !(e.ctrlKey || e.metaKey)) return;
+    e.preventDefault();
+    mindmapZoom(e.deltaY > 0 ? -0.12 : 0.12);
+  }, { passive: false });
+}
+
 /* 心智圖顯示模式：fit＝整張縮進一頁；natural＝原始大小＋左右滑動 */
 function setMindmapMode(fit) {
   const el = document.getElementById('mindmap-scroll');
@@ -2153,15 +2509,34 @@ function setMindmapMode(fit) {
   }
 }
 
-/* 縮到 0.6 倍以內還看得清楚就預設全覽，太大張則維持原始大小 */
+/* 進場自動決定顯示方式：桌面 fit-to-view，手機縮到 0.6 倍內就預設全覽 */
 function autoFitMindmap() {
   const el = document.getElementById('mindmap-scroll');
   const svg = el && el.querySelector('svg');
   if (!el || !svg) return;
+
+  attachMindmapPanZoom(el);
+
+  if (isDesktopViz()) {
+    fitMindmapDesktop();
+    return;
+  }
+
+  // 手機：清掉桌面留下的行內尺寸，回到原本的邏輯
+  svg.style.width = '';
+  svg.style.height = '';
   const natural = parseFloat(svg.getAttribute('width')) || 0;
   const avail = el.clientWidth - 12;
   setMindmapMode(natural <= avail || avail / natural >= 0.6);
 }
+
+/* 視窗縮放／跨越斷點時重新校正心智圖 */
+let _mmResizeTimer = null;
+window.addEventListener('resize', () => {
+  if (state.view !== 'chapter' || state.chapterTab !== 'viz') return;
+  clearTimeout(_mmResizeTimer);
+  _mmResizeTimer = setTimeout(autoFitMindmap, 150);
+});
 
 function toggleMindmapFit() {
   const el = document.getElementById('mindmap-scroll');
@@ -2191,9 +2566,9 @@ function buildCloud(m) {
 
   return `<div class="kw-cloud">${scored.map(s => {
     const r = (s.n - min) / span;
-    const size = (15 + r * 10).toFixed(1);
+    const size = (1 + r * 0.67).toFixed(2);
     const color = r > 0.66 ? 'var(--red-dark)' : (r > 0.33 ? 'var(--red)' : 'var(--text2)');
-    return `<span class="kw-word" style="font-size:${size}px;color:${color}" title="在本章出現約 ${s.n} 次">${esc(s.t)}</span>`;
+    return `<span class="kw-word" style="font-size:${size}em;color:${color}" title="在本章出現約 ${s.n} 次">${esc(s.t)}</span>`;
   }).join('')}</div>`;
 }
 
@@ -2406,6 +2781,12 @@ function renderChapterViz() {
         <span class="viz-title">全章心智圖</span>
         <span class="viz-hint" id="mindmap-hint">左右滑動看完整</span>
         <button class="viz-tool" id="mindmap-fit-btn" onclick="toggleMindmapFit()">縮放全覽</button>
+        <div class="mm-zoom" id="mindmap-zoom">
+          <button class="mm-zbtn" onclick="mindmapZoom(-0.15)" aria-label="縮小">&#8722;</button>
+          <span class="mm-zlabel" id="mindmap-zoom-label">100%</span>
+          <button class="mm-zbtn" onclick="mindmapZoom(0.15)" aria-label="放大">&#43;</button>
+          <button class="mm-zbtn mm-zreset" onclick="mindmapReset()">重置</button>
+        </div>
       </div>
       <div class="mindmap-scroll" id="mindmap-scroll">${mindmap}</div>
     </div>`);
@@ -2425,13 +2806,13 @@ function renderChapterViz() {
   if (flows) blocks.push(`
     <div class="viz-block">
       <div class="viz-head"><span class="viz-title">操作流程圖</span><span class="viz-hint">照順序走</span></div>
-      ${flows}
+      <div class="viz-flows">${flows}</div>
     </div>`);
 
   if (fc.cards.length) blocks.push(`
     <div class="viz-block">
       <div class="viz-head"><span class="viz-title">記憶卡複習</span><span class="viz-hint">點卡片翻面，左右滑換卡</span></div>
-      <div id="viz-fc"></div>
+      <div class="fc-holder" id="viz-fc"></div>
     </div>`);
 
   el.innerHTML = `<div class="viz-wrap">${blocks.join('')}</div>`;
@@ -2469,6 +2850,8 @@ window.deleteCurrentBook = deleteCurrentBook;
 window.deleteCurrentChapter = deleteCurrentChapter;
 window.switchChapterTab = switchChapterTab;
 window.toggleMindmapFit = toggleMindmapFit;
+window.mindmapZoom = mindmapZoom;
+window.mindmapReset = mindmapReset;
 window.fcFlip = fcFlip;
 window.fcMove = fcMove;
 window.fcShuffle = fcShuffle;
