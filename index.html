@@ -738,6 +738,365 @@
 
   /* scrollbar */
   ::-webkit-scrollbar { display: none; }
+  /* ══════════════ VISUALIZATION (圖解) ══════════════ */
+  .viz-wrap { padding: 1.25rem 1.25rem 0; }
+
+  .viz-block { margin-bottom: 1.75rem; }
+
+  .viz-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .viz-title {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.06em;
+  }
+
+  .viz-hint {
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.02em;
+  }
+
+  .viz-tool {
+    margin-left: auto;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 11px;
+    font-size: 11px;
+    font-family: var(--sans);
+    color: var(--red);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .viz-tool:active { background: var(--red-light); }
+
+  /* ── MIND MAP ── */
+  .mindmap-scroll {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mindmap-scroll svg { display: block; }
+  .mindmap-scroll.fit { overflow-x: hidden; }
+  .mindmap-scroll.fit svg { width: 100%; height: auto; }
+
+  /* ── KEYWORD CLOUD ── */
+  .kw-cloud {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px 14px;
+  }
+
+  .kw-word {
+    font-family: var(--serif);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+  }
+
+  /* ── CONTEXT MATRIX ── */
+  .ctx-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 620px) {
+    .ctx-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .ctx-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .ctx-card-head {
+    background: var(--red);
+    color: #FDE8E0;
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .ctx-card-count {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.75;
+    letter-spacing: 0.04em;
+  }
+
+  .ctx-card-body { padding: 4px 12px 10px; }
+
+  .ctx-row {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-top: 0.5px dashed var(--border2);
+  }
+  .ctx-row:first-child { border-top: none; }
+
+  .ctx-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red-mid);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .ctx-main { font-size: 13.5px; font-weight: 500; color: var(--text); line-height: 1.5; }
+  .ctx-sub { font-size: 11.5px; color: var(--text3); line-height: 1.7; margin-top: 3px; }
+
+  /* ── FLOW CHART ── */
+  .flowc {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0.95rem 1rem 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .flowc-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .flowc-name {
+    font-family: var(--serif);
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .flowc-steps {
+    position: relative;
+    padding-left: 28px;
+    margin-top: 12px;
+  }
+
+  .flowc-steps::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    bottom: 14px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--red), var(--red-mid));
+    border-radius: 2px;
+  }
+
+  .flowc-step { position: relative; padding: 3px 0 9px; }
+  .flowc-step:last-child { padding-bottom: 0; }
+
+  .flowc-num {
+    position: absolute;
+    left: -28px;
+    top: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--red);
+    color: #FDE8E0;
+    font-family: var(--serif);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flowc-txt {
+    display: inline-block;
+    background: var(--surface2);
+    border: 0.5px solid var(--border2);
+    border-radius: 8px;
+    padding: 5px 11px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── FLASHCARDS ── */
+  .fc-stage { perspective: 1200px; }
+
+  .fc-card {
+    position: relative;
+    width: 100%;
+    height: 232px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0.15, 0.2, 1);
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .fc-card.flipped { transform: rotateY(180deg); }
+
+  .fc-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 14px;
+    border: 0.5px solid var(--border);
+    padding: 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .fc-front {
+    background: var(--surface);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .fc-back {
+    background: var(--red-light);
+    border-color: var(--red-mid);
+    transform: rotateY(180deg);
+    overflow-y: auto;
+  }
+
+  .fc-kind {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+
+  .fc-q {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .fc-tap {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .fc-a-main {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--red-dark);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .fc-a-body {
+    font-size: 13px;
+    color: #5C4A40;
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .fc-a-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+  }
+  .fc-a-flow .flow-pill { background: rgba(255,255,255,0.75); }
+
+  .fc-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .fc-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border);
+    background: var(--surface);
+    color: var(--red);
+    font-size: 17px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: var(--sans);
+  }
+  .fc-btn:active { background: var(--red-light); }
+  .fc-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .fc-mid { flex: 1; text-align: center; }
+
+  .fc-count { font-size: 12px; color: var(--text3); letter-spacing: 0.06em; }
+
+  .fc-dots {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .fc-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); }
+  .fc-dot.on { background: var(--red); }
+
+  .fc-shuffle {
+    display: block;
+    margin: 12px auto 0;
+    background: none;
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-family: var(--sans);
+    color: var(--text2);
+    cursor: pointer;
+  }
+  .fc-shuffle:active { background: var(--surface2); }
+
+  /* ── VIZ EMPTY ── */
+  .viz-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text3);
+  }
+  .viz-empty .empty-icon { font-size: 42px; margin-bottom: 0.875rem; }
+
 </style>
 </head>
 <body>
@@ -790,11 +1149,24 @@
 <!-- ═══════════════ VIEW: CHAPTER DETAIL ═══════════════ -->
 <div class="view" id="view-chapter">
   <div id="chapter-hero-content"></div>
-  <div id="chapter-body-content"></div>
-  <div class="danger-zone" style="display:flex; flex-direction:column; gap:10px;">
-    <button class="btn-ghost" style="margin-top:0;" onclick="showEditChapter()">✏️ 編輯此章節</button>
-    <button class="btn-danger" onclick="deleteCurrentChapter()">刪除此章節</button>
+
+  <div class="detail-tabs">
+    <div class="detail-tab active" id="tab-btn-notes" onclick="switchChapterTab('notes')">心得</div>
+    <div class="detail-tab" id="tab-btn-viz" onclick="switchChapterTab('viz')">🗺️ 圖解</div>
   </div>
+
+  <div class="tab-content active" id="tab-pane-notes">
+    <div id="chapter-body-content"></div>
+    <div class="danger-zone" style="display:flex; flex-direction:column; gap:10px;">
+      <button class="btn-ghost" style="margin-top:0;" onclick="showEditChapter()">✏️ 編輯此章節</button>
+      <button class="btn-danger" onclick="deleteCurrentChapter()">刪除此章節</button>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-pane-viz">
+    <div id="chapter-viz-content"></div>
+  </div>
+
   <div class="bottom-pad"></div>
 </div>
 
@@ -1215,7 +1587,7 @@ async function seedAndMigrate() {
 }
 
 /* ─────────── STATE ─────────── */
-let state = { view: 'home', bookId: null, chapterId: null, history: [] };
+let state = { view: 'home', bookId: null, chapterId: null, chapterTab: 'notes', history: [] };
 
 /* ─────────── NAV ─────────── */
 function showView(name, pushHistory = true) {
@@ -1394,6 +1766,7 @@ keywords 最多 5 個，tactics 和 techniques 各視內容決定數量，flow �
 function openChapter(chapterId) {
   state.chapterId = chapterId;
   renderChapter();
+  switchChapterTab('notes');
   showView('chapter');
 }
 
@@ -1578,6 +1951,494 @@ async function deleteCurrentChapter() {
   navBack();
 }
 
+
+/* ═══════════════════════════════════════════════════════
+   VISUALIZATION LAYER (圖解)
+   把章節既有的 keywords / tactics / techniques / notes
+   自動轉成心智圖、關鍵字雲、情境矩陣、流程圖與記憶卡。
+   純 SVG + CSS，不依賴任何外部套件。
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── 章節分頁切換 ─── */
+function switchChapterTab(name) {
+  state.chapterTab = name;
+  ['notes', 'viz'].forEach(t => {
+    document.getElementById('tab-btn-' + t).classList.toggle('active', t === name);
+    document.getElementById('tab-pane-' + t).classList.toggle('active', t === name);
+  });
+  if (name === 'viz') renderChapterViz();
+  window.scrollTo(0, 0);
+}
+
+/* ─── 從原始筆記推導結構（AI 分析缺席時的後備） ─── */
+const BULLET_RE = /^(?:[•·▪◦\-–—*]+|[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]|[（(]?\d+[）).、]|\d+\s)/;
+
+function noteLines(notes) {
+  return String(notes || '')
+    .split(/\n+/)
+    .map(l => l.trim().replace(BULLET_RE, '').trim())
+    .filter(l => l.length > 1);
+}
+
+function deriveFromNotes(ch) {
+  const lines = noteLines(ch.notes);
+  const tactics = [];
+  const techniques = [];
+  const points = [];
+
+  lines.forEach(line => {
+    const parts = line.split(/\s*(?:→|=>|➜)\s*/).map(s => s.trim()).filter(Boolean);
+    if (parts.length >= 3) {
+      techniques.push({ name: parts[0].slice(0, 18), badge: '流程', body: line, flow: parts });
+      return;
+    }
+    const m = line.match(/^(對[^：:]{1,8}|遇到[^：:]{1,10}|[^：:]{1,8})\s*[：:]\s*(.+)$/);
+    if (m && m[2].length > 1) {
+      tactics.push({ ctx: m[1], main: m[2].slice(0, 40), sub: parts.length === 2 ? parts[1] : '' });
+      return;
+    }
+    points.push(line);
+  });
+
+  return { tactics, techniques, points };
+}
+
+/* 產生本章統一的視覺化資料模型 */
+function vizModel(ch) {
+  const keywords = (ch.keywords || []).map(k => String(k).trim()).filter(Boolean);
+  let tactics = (ch.tactics || []).filter(t => t && (t.main || t.sub));
+  let techniques = (ch.techniques || []).filter(t => t && t.name);
+  let points = [];
+
+  // 沒有結構化資料時（例如 AI 整理失敗），退而從原始筆記自動拆解
+  if (tactics.length === 0 && techniques.length === 0) {
+    const d = deriveFromNotes(ch);
+    tactics = d.tactics;
+    techniques = d.techniques;
+    points = d.points;
+  }
+
+  const corpus = [
+    ch.notes || '',
+    ...tactics.map(t => `${t.ctx || ''} ${t.main || ''} ${t.sub || ''}`),
+    ...techniques.map(t => `${t.name || ''} ${t.body || ''} ${(t.flow || []).join(' ')}`),
+    ...points
+  ].join('\n');
+
+  return { keywords, tactics, techniques, points, corpus, isEmpty: keywords.length === 0 && tactics.length === 0 && techniques.length === 0 && points.length === 0 };
+}
+
+/* ─── 文字寬度估算（中日韓全形字約等於字級寬） ─── */
+const CJK_RE = /[⺀-鿿　-〿＀-｠￠-￦]/;
+function textW(str, fontSize) {
+  let w = 0;
+  for (const c of String(str)) w += CJK_RE.test(c) ? fontSize : fontSize * 0.56;
+  return w;
+}
+function clip(str, n) {
+  const s = String(str || '').replace(/\s+/g, ' ').trim();
+  return [...s].length > n ? [...s].slice(0, n).join('') + '…' : s;
+}
+
+/* ─── 心智圖 ─── */
+const BRANCH_COLORS = ['#993C1D', '#A87438', '#6E6A4E', '#7C4A54'];
+
+function buildMindmap(ch, m) {
+  const groups = [];
+  if (m.keywords.length) {
+    groups.push({ name: '核心關鍵字', leaves: m.keywords.map(k => ({ main: clip(k, 12) })) });
+  }
+  if (m.tactics.length) {
+    groups.push({
+      name: '因人制宜策略',
+      leaves: m.tactics.map(t => ({ main: clip(t.main || t.ctx, 14), sub: clip(t.ctx || '', 10) }))
+    });
+  }
+  if (m.techniques.length) {
+    groups.push({
+      name: '進階技法',
+      leaves: m.techniques.map(t => ({ main: clip(t.name, 14), sub: clip(t.badge || '', 10) }))
+    });
+  }
+  if (m.points.length) {
+    groups.push({ name: '筆記重點', leaves: m.points.slice(0, 12).map(p => ({ main: clip(p, 16) })) });
+  }
+  if (groups.length === 0) return '';
+
+  const PAD = 14;
+  const F_ROOT = 16, F_CAT = 13, F_LEAF = 12.5, F_SUB = 10;
+  const ROOT_H = 44, CAT_H = 32;
+  const LEAF_GAP = 9, GROUP_GAP = 20;
+  const GAP_X = 36;
+
+  const rootLabel = clip(ch.title, 10);
+  const rootW = textW(rootLabel, F_ROOT) + 30;
+  const catW = Math.max(...groups.map(g => textW(g.name, F_CAT))) + 24;
+  const leafW = Math.max(...groups.flatMap(g =>
+    g.leaves.map(l => Math.max(textW(l.main, F_LEAF), l.sub ? textW(l.sub, F_SUB) : 0))
+  )) + 22;
+
+  const rootX = PAD;
+  const catX = rootX + rootW + GAP_X;
+  const leafX = catX + catW + GAP_X;
+
+  // 垂直排版
+  let y = PAD;
+  groups.forEach(g => {
+    g.leaves.forEach(l => {
+      l.h = l.sub ? 40 : 30;
+      l.y = y + l.h / 2;
+      y += l.h + LEAF_GAP;
+    });
+    y = y - LEAF_GAP + GROUP_GAP;
+    const first = g.leaves[0], last = g.leaves[g.leaves.length - 1];
+    g.y = (first.y + last.y) / 2;
+  });
+  const totalH = y - GROUP_GAP + PAD;
+  const rootY = (groups[0].y + groups[groups.length - 1].y) / 2;
+  const totalW = leafX + leafW + PAD;
+
+  const curve = (x1, y1, x2, y2, color) => {
+    const mx = (x1 + x2) / 2;
+    return `<path d="M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}" fill="none" stroke="${color}" stroke-opacity="0.45" stroke-width="1.6" stroke-linecap="round"/>`;
+  };
+
+  let links = '', nodes = '';
+
+  groups.forEach((g, gi) => {
+    const color = BRANCH_COLORS[gi % BRANCH_COLORS.length];
+    links += curve(rootX + rootW, rootY, catX, g.y, color);
+
+    nodes += `<g>
+      <rect x="${catX}" y="${g.y - CAT_H / 2}" width="${catW}" height="${CAT_H}" rx="8" fill="${color}" fill-opacity="0.12" stroke="${color}" stroke-opacity="0.55" stroke-width="1"/>
+      <text x="${catX + catW / 2}" y="${g.y}" text-anchor="middle" dominant-baseline="central" font-family="'Noto Serif TC', serif" font-size="${F_CAT}" font-weight="700" fill="${color}" letter-spacing="0.5">${esc(g.name)}</text>
+    </g>`;
+
+    g.leaves.forEach(l => {
+      links += curve(catX + catW, g.y, leafX, l.y, color);
+      const ty = l.sub ? l.y - 7 : l.y;
+      nodes += `<g>
+        <rect x="${leafX}" y="${l.y - l.h / 2}" width="${leafW}" height="${l.h}" rx="8" fill="#FFFFFF" stroke="${color}" stroke-opacity="0.32" stroke-width="1"/>
+        <text x="${leafX + 11}" y="${ty}" dominant-baseline="central" font-family="'Noto Sans TC', sans-serif" font-size="${F_LEAF}" fill="#1A1814">${esc(l.main)}</text>
+        ${l.sub ? `<text x="${leafX + 11}" y="${l.y + 10}" dominant-baseline="central" font-family="'Noto Sans TC', sans-serif" font-size="${F_SUB}" fill="#9E9C96">${esc(l.sub)}</text>` : ''}
+      </g>`;
+    });
+  });
+
+  const root = `<g>
+    <rect x="${rootX}" y="${rootY - ROOT_H / 2}" width="${rootW}" height="${ROOT_H}" rx="10" fill="#993C1D"/>
+    <text x="${rootX + rootW / 2}" y="${rootY}" text-anchor="middle" dominant-baseline="central" font-family="'Noto Serif TC', serif" font-size="${F_ROOT}" font-weight="700" fill="#FDE8E0" letter-spacing="1.2">${esc(rootLabel)}</text>
+  </g>`;
+
+  return `<svg width="${Math.round(totalW)}" height="${Math.round(totalH)}" viewBox="0 0 ${Math.round(totalW)} ${Math.round(totalH)}" xmlns="http://www.w3.org/2000/svg">${links}${root}${nodes}</svg>`;
+}
+
+/* 心智圖顯示模式：fit＝整張縮進一頁；natural＝原始大小＋左右滑動 */
+function setMindmapMode(fit) {
+  const el = document.getElementById('mindmap-scroll');
+  const btn = document.getElementById('mindmap-fit-btn');
+  const hint = document.getElementById('mindmap-hint');
+  const svg = el && el.querySelector('svg');
+  if (!el || !svg || !btn) return;
+
+  const natural = parseFloat(svg.getAttribute('width')) || 0;
+  const exact = natural <= el.clientWidth - 12;   // 本來就放得下，不需要按鈕
+
+  el.classList.toggle('fit', fit);
+  btn.textContent = fit ? '放大細看' : '縮成一頁';
+  btn.style.display = exact ? 'none' : '';
+  if (hint) {
+    hint.style.display = exact ? 'none' : '';
+    hint.textContent = fit ? '已縮成一頁　點右側可放大' : '左右滑動看完整';
+  }
+}
+
+/* 縮到 0.6 倍以內還看得清楚就預設全覽，太大張則維持原始大小 */
+function autoFitMindmap() {
+  const el = document.getElementById('mindmap-scroll');
+  const svg = el && el.querySelector('svg');
+  if (!el || !svg) return;
+  const natural = parseFloat(svg.getAttribute('width')) || 0;
+  const avail = el.clientWidth - 12;
+  setMindmapMode(natural <= avail || avail / natural >= 0.6);
+}
+
+function toggleMindmapFit() {
+  const el = document.getElementById('mindmap-scroll');
+  if (!el) return;
+  setMindmapMode(!el.classList.contains('fit'));
+}
+
+/* ─── 關鍵字雲 ─── */
+function buildCloud(m) {
+  let terms = m.keywords.slice();
+  if (terms.length === 0) {
+    terms = [...new Set(m.tactics.map(t => t.ctx).concat(m.techniques.map(t => t.name)))].filter(Boolean).slice(0, 10);
+  }
+  if (terms.length === 0) return '';
+
+  const scored = terms.map(t => {
+    let n = 0;
+    for (const piece of String(t).split(/[、，,\/]/).map(s => s.trim()).filter(Boolean)) {
+      n = Math.max(n, m.corpus.split(piece).length - 1);
+    }
+    return { t: String(t).trim(), n: Math.max(n, 1) };
+  });
+
+  const max = Math.max(...scored.map(s => s.n));
+  const min = Math.min(...scored.map(s => s.n));
+  const span = Math.max(max - min, 1);
+
+  return `<div class="kw-cloud">${scored.map(s => {
+    const r = (s.n - min) / span;
+    const size = (15 + r * 10).toFixed(1);
+    const color = r > 0.66 ? 'var(--red-dark)' : (r > 0.33 ? 'var(--red)' : 'var(--text2)');
+    return `<span class="kw-word" style="font-size:${size}px;color:${color}" title="在本章出現約 ${s.n} 次">${esc(s.t)}</span>`;
+  }).join('')}</div>`;
+}
+
+/* ─── 情境對照矩陣 ─── */
+function buildMatrix(m) {
+  if (m.tactics.length === 0) return '';
+  const groups = new Map();
+  m.tactics.forEach(t => {
+    const key = (t.ctx || '通用').trim() || '通用';
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(t);
+  });
+
+  return `<div class="ctx-grid">${[...groups.entries()].map(([ctx, list]) => `
+    <div class="ctx-card">
+      <div class="ctx-card-head"><span>${esc(ctx)}</span><span class="ctx-card-count">${list.length} 招</span></div>
+      <div class="ctx-card-body">
+        ${list.map(t => `
+          <div class="ctx-row">
+            <span class="ctx-dot"></span>
+            <div>
+              <div class="ctx-main">${esc(t.main || '')}</div>
+              ${t.sub ? `<div class="ctx-sub">${esc(t.sub)}</div>` : ''}
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+/* ─── 流程圖 ─── */
+function buildFlows(m) {
+  const withFlow = m.techniques.filter(t => Array.isArray(t.flow) && t.flow.length > 1);
+  if (withFlow.length === 0) return '';
+  return withFlow.map(t => `
+    <div class="flowc">
+      <div class="flowc-head">
+        <span class="flowc-name">${esc(t.name)}</span>
+        ${t.badge ? `<span class="technique-badge">${esc(t.badge)}</span>` : ''}
+      </div>
+      <div class="flowc-steps">
+        ${t.flow.map((f, i) => `
+          <div class="flowc-step">
+            <span class="flowc-num">${i + 1}</span>
+            <span class="flowc-txt">${esc(f)}</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+/* ─── 記憶卡 ─── */
+let fc = { cards: [], i: 0, flipped: false };
+
+function buildCards(m) {
+  const cards = [];
+
+  m.tactics.forEach(t => {
+    const ctx = (t.ctx || '').trim();
+    if (ctx && ctx !== '通用' && t.main) {
+      cards.push({ kind: '情境策略', q: `「${ctx}」該怎麼做？`, a: t.main, body: t.sub || '', flow: [] });
+    } else if (t.main) {
+      cards.push({ kind: '情境策略', q: t.main, a: '', body: t.sub || '', flow: [] });
+    }
+  });
+
+  m.techniques.forEach(t => {
+    cards.push({
+      kind: '進階技法',
+      q: t.name,
+      a: t.badge || '',
+      body: t.body || '',
+      flow: Array.isArray(t.flow) ? t.flow : []
+    });
+  });
+
+  m.keywords.forEach(k => {
+    const key = String(k).trim();
+    if (!key) return;
+    const hits = [];
+    m.tactics.forEach(t => {
+      const txt = `${t.main || ''} ${t.sub || ''}`;
+      if (String(key).split(/[、，,\/]/).some(p => p.trim() && txt.includes(p.trim()))) hits.push(t.main);
+    });
+    m.techniques.forEach(t => {
+      const txt = `${t.name || ''} ${t.body || ''}`;
+      if (String(key).split(/[、，,\/]/).some(p => p.trim() && txt.includes(p.trim()))) hits.push(t.name);
+    });
+    if (hits.length) {
+      cards.push({ kind: '核心關鍵字', q: key, a: '本章相關做法', body: hits.slice(0, 4).map(h => '・' + h).join('\n'), flow: [] });
+    }
+  });
+
+  m.points.slice(0, 15).forEach(p => {
+    cards.push({ kind: '筆記重點', q: clip(p, 20), a: '', body: p, flow: [] });
+  });
+
+  return cards;
+}
+
+function renderFlashcards() {
+  const el = document.getElementById('viz-fc');
+  if (!el) return;
+  if (fc.cards.length === 0) { el.innerHTML = ''; return; }
+
+  const c = fc.cards[fc.i];
+  el.innerHTML = `
+    <div class="fc-stage">
+      <div class="fc-card${fc.flipped ? ' flipped' : ''}" id="fc-card" onclick="fcFlip()">
+        <div class="fc-face fc-front">
+          <div class="fc-kind">${esc(c.kind)}</div>
+          <div class="fc-q">${esc(c.q)}</div>
+          <div class="fc-tap">點一下翻面看答案</div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-kind">${esc(c.kind)}</div>
+          ${c.a ? `<div class="fc-a-main">${esc(c.a)}</div>` : ''}
+          ${c.body ? `<div class="fc-a-body">${esc(c.body)}</div>` : ''}
+          ${c.flow && c.flow.length > 1 ? `<div class="fc-a-flow">${c.flow.map((f, i) => `<span class="flow-pill">${esc(f)}</span>${i < c.flow.length - 1 ? '<span class="flow-arr">→</span>' : ''}`).join('')}</div>` : ''}
+        </div>
+      </div>
+    </div>
+    <div class="fc-bar">
+      <button class="fc-btn" onclick="fcMove(-1)" ${fc.i === 0 ? 'disabled' : ''} aria-label="上一張">&#8249;</button>
+      <div class="fc-mid">
+        <div class="fc-count">${fc.i + 1} / ${fc.cards.length}</div>
+        <div class="fc-dots">${fc.cards.map((_, i) => `<span class="fc-dot${i === fc.i ? ' on' : ''}"></span>`).join('')}</div>
+      </div>
+      <button class="fc-btn" onclick="fcMove(1)" ${fc.i === fc.cards.length - 1 ? 'disabled' : ''} aria-label="下一張">&#8250;</button>
+    </div>
+    <button class="fc-shuffle" onclick="fcShuffle()">&#8635; 洗牌重來</button>
+  `;
+  attachSwipe(document.getElementById('fc-card'));
+}
+
+function fcFlip() {
+  fc.flipped = !fc.flipped;
+  const card = document.getElementById('fc-card');
+  if (card) card.classList.toggle('flipped', fc.flipped);
+}
+
+function fcMove(d) {
+  const next = fc.i + d;
+  if (next < 0 || next >= fc.cards.length) return;
+  fc.i = next;
+  fc.flipped = false;
+  renderFlashcards();
+}
+
+function fcShuffle() {
+  for (let i = fc.cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [fc.cards[i], fc.cards[j]] = [fc.cards[j], fc.cards[i]];
+  }
+  fc.i = 0;
+  fc.flipped = false;
+  renderFlashcards();
+  showToast('🔀 已洗牌');
+}
+
+function attachSwipe(el) {
+  if (!el) return;
+  let x0 = null, y0 = null, moved = false;
+  el.addEventListener('touchstart', e => {
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; moved = false;
+  }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    if (x0 === null) return;
+    if (Math.abs(e.touches[0].clientX - x0) > 12) moved = true;
+  }, { passive: true });
+  el.addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    const dy = e.changedTouches[0].clientY - y0;
+    x0 = null;
+    if (moved && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+      e.preventDefault();
+      fcMove(dx < 0 ? 1 : -1);
+    }
+  });
+}
+
+/* ─── 組裝整個「圖解」面板 ─── */
+function renderChapterViz() {
+  const ch = currentChapter();
+  const el = document.getElementById('chapter-viz-content');
+  if (!ch || !el) return;
+
+  const m = vizModel(ch);
+
+  if (m.isEmpty) {
+    el.innerHTML = `<div class="viz-empty">
+      <div class="empty-icon">🗺️</div>
+      <div class="empty-title">這章還沒有可以畫的內容</div>
+      <div class="empty-sub">先在「心得」分頁補上原始筆記，<br>圖解會自動從筆記生成。</div>
+    </div>`;
+    return;
+  }
+
+  const mindmap = buildMindmap(ch, m);
+  const cloud = buildCloud(m);
+  const matrix = buildMatrix(m);
+  const flows = buildFlows(m);
+
+  fc = { cards: buildCards(m), i: 0, flipped: false };
+
+  const blocks = [];
+
+  if (mindmap) blocks.push(`
+    <div class="viz-block">
+      <div class="viz-head">
+        <span class="viz-title">全章心智圖</span>
+        <span class="viz-hint" id="mindmap-hint">左右滑動看完整</span>
+        <button class="viz-tool" id="mindmap-fit-btn" onclick="toggleMindmapFit()">縮放全覽</button>
+      </div>
+      <div class="mindmap-scroll" id="mindmap-scroll">${mindmap}</div>
+    </div>`);
+
+  if (cloud) blocks.push(`
+    <div class="viz-block">
+      <div class="viz-head"><span class="viz-title">關鍵字雲</span><span class="viz-hint">字越大＝本章出現越多</span></div>
+      ${cloud}
+    </div>`);
+
+  if (matrix) blocks.push(`
+    <div class="viz-block">
+      <div class="viz-head"><span class="viz-title">情境對照矩陣</span><span class="viz-hint">按情境分組，遇到就對照</span></div>
+      ${matrix}
+    </div>`);
+
+  if (flows) blocks.push(`
+    <div class="viz-block">
+      <div class="viz-head"><span class="viz-title">操作流程圖</span><span class="viz-hint">照順序走</span></div>
+      ${flows}
+    </div>`);
+
+  if (fc.cards.length) blocks.push(`
+    <div class="viz-block">
+      <div class="viz-head"><span class="viz-title">記憶卡複習</span><span class="viz-hint">點卡片翻面，左右滑換卡</span></div>
+      <div id="viz-fc"></div>
+    </div>`);
+
+  el.innerHTML = `<div class="viz-wrap">${blocks.join('')}</div>`;
+  if (mindmap) autoFitMindmap();
+  if (fc.cards.length) renderFlashcards();
+}
+
 /* ─────────── ESCAPE ─────────── */
 function esc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1606,6 +2467,11 @@ window.saveChapter = saveChapter;
 window.updateChapter = updateChapter;
 window.deleteCurrentBook = deleteCurrentBook;
 window.deleteCurrentChapter = deleteCurrentChapter;
+window.switchChapterTab = switchChapterTab;
+window.toggleMindmapFit = toggleMindmapFit;
+window.fcFlip = fcFlip;
+window.fcMove = fcMove;
+window.fcShuffle = fcShuffle;
 
 init();
 </script>
