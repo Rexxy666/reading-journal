@@ -1711,8 +1711,58 @@ const CH_SERVANT_LEADERSHIP = {
   ]
 };
 
-/* 把「僕人式領導」章節補進《高效偷懶》。找不到該書時才建立，避免重複 */
-function migrateServantLeadership(data) {
+const CH_HABIT_BUILDING = {
+  id: 'ch_habit_building',
+  title: '提升工作和生活品質的習慣養成術',
+  number: 6,
+  date: '2026年8月18日',
+  keywords: ['休息', '冥想', '時間箱', '準時下班', '學習'],
+  notes: '一、重新定義「休息」（Take a rest）\n• 關鍵心態：休息並不是「什麼都不做」，而是去做與平時不同的事情\n• 人就像游泳，無法一直不換氣：\n   → 每天能高度集中精神在同一件事上的時間約為 4 小時，超過容易疲勞\n   → 遇到瓶頸時暫時放下，去轉換做不同的事，反而容易產生突破性的想法\n• 避免倦怠：把平時不做的事情當作休閒活動；一旦對某事厭倦就去嘗試其他感興趣的事，不僅能恢復精神，還能保持廣泛的興趣與行動力\n\n二、提升工作效率的必要條件\n① 冥想（Mindfulness）\n   → 方法：每天抽出 5～10 分鐘，設定鬧鐘\n   → 要領：盡量不思考，專注於從鼻子吸氣時感受到的清涼感，再從嘴巴吐出\n   → 效果：讓大腦得到深度休息\n② 刻意安排遠離電腦螢幕的時間\n③ 確保充足的睡眠\n\n三、提高生產力的秘訣：「學習」與「準時下班」\n• 提高生產力的秘訣是「學習」：\n   → 單純埋頭苦幹、拉長勞動時間，短期產出可能增加，但並未真正提高生產力\n   → 投入與工作無關或非工作專屬的「學習項目」，能讓大腦放鬆並全面提升核心能力\n• 準時下班 → 讓自己休息：\n   → 業界頂尖人士多半注重準時下班，一直加班並非長久之計\n   → 從生物學角度來看，人一直處於工作狀態並不自然\n• 選擇喜歡的時間工作 → 以工作性質為導向安排\n\n四、時間箱（Timeboxing）實踐\n• 核心觀念：\n   → 設定什麼時間做什麼事\n   → 不以完成目標為目標，以固定時間最大化注意力為目標\n• 具體應用（學習時間箱）：\n   → 利用早上起床到上班前的幾個小時作為專屬「學習時間」（例如：學習新技術、刷題、閱讀提升專業品質的書籍）\n   → 即使在最繁忙的時期執行時間箱，減少實際工作時數，整體生產力反而不減反增，手頭工作更能勝任且心理壓力大幅降低',
+  tactics: [
+    { ctx: '休息定義', main: '休息不是什麼都不做，而是去做不同的事', sub: '把平時不做的事情當作休閒活動。換一件事做才是真正的換氣，發呆躺平並不會讓精神回來' },
+    { ctx: '專注上限', main: '一天高度集中約 4 小時就該收', sub: '人就像游泳，無法一直不換氣。每天能高度集中精神在同一件事上的時間約為 4 小時，超過只是在累積疲勞' },
+    { ctx: '遇到瓶頸', main: '暫時放下，轉去做別的事', sub: '卡住時硬撐沒有用。轉換去做不同的事，反而容易產生突破性的想法' },
+    { ctx: '感到厭倦', main: '立刻換一件有興趣的事去嘗試', sub: '不只能恢復精神，還能保持廣泛的興趣與行動力，這是避免倦怠的根本做法而非急救措施' },
+    { ctx: '提高產出', main: '靠學習，不是靠拉長工時', sub: '單純埋頭苦幹、拉長勞動時間，短期產出可能增加，但並未真正提高生產力。投入與工作無關的學習項目，反而能讓大腦放鬆並全面提升核心能力' },
+    { ctx: '下班時間', main: '準時下班，讓自己休息', sub: '業界頂尖人士多半注重準時下班，一直加班並非長久之計。從生物學角度來看，人一直處於工作狀態並不自然' },
+    { ctx: '工作安排', main: '選擇喜歡的時間工作，以工作性質為導向', sub: '不同性質的工作配不同的時段，依工作本身的需求安排，而不是一律塞進固定的上班時間裡' }
+  ],
+  techniques: [
+    {
+      name: '冥想（Mindfulness）',
+      badge: '每日 5～10 分鐘',
+      body: '提升工作效率的第一個必要條件。重點不在坐多久，而在讓大腦真正得到深度休息。',
+      flow: ['設定 5～10 分鐘鬧鐘', '盡量不思考', '專注鼻子吸氣的清涼感', '再從嘴巴吐出', '大腦得到深度休息']
+    },
+    {
+      name: '時間箱（Timeboxing）',
+      badge: '核心方法',
+      body: '設定什麼時間做什麼事。關鍵轉念是：不以完成目標為目標，而以固定時間內最大化注意力為目標。',
+      flow: ['先決定時段', '綁定該時段要做的事', '在固定時間內最大化注意力', '不以完成與否衡量成敗']
+    },
+    {
+      name: '學習時間箱',
+      badge: '具體應用',
+      body: '把時間箱用在自己身上。實測即使在最繁忙的時期執行，減少了實際工作時數，整體生產力反而不減反增，手頭工作更能勝任且心理壓力大幅降低。',
+      flow: ['早上起床', '上班前幾小時＝專屬學習時間', '學新技術／刷題／閱讀專業書', '工作時數減少，生產力反增']
+    },
+    {
+      name: '提升工作效率的三個必要條件',
+      badge: '基本盤',
+      body: '① 冥想：每天 5～10 分鐘，讓大腦深度休息。② 刻意安排遠離電腦螢幕的時間。③ 確保充足的睡眠。三者都不是加分項，而是效率的地基。',
+      flow: []
+    },
+    {
+      name: '游泳換氣法則',
+      badge: '心態比喻',
+      body: '人就像游泳，無法一直不換氣。換氣不是偷懶，是能繼續游下去的前提——把休息當成技術動作的一部分，而不是意志力不足的證據。',
+      flow: []
+    }
+  ]
+};
+
+/* 把《高效偷懶》的章節補齊。新增章節時在下方加一行即可 */
+function migrateLazyEfficiency(data) {
   let book = data.books.find(b => (b.title || '').includes('偷懶'));
 
   if (!book) {
@@ -1726,13 +1776,19 @@ function migrateServantLeadership(data) {
     data.books.push(book);
   }
 
-  const exists = book.chapters.some(c =>
-    c.id === CH_SERVANT_LEADERSHIP.id || (c.title || '').includes('僕人式領導')
-  );
-  if (exists) return false;
+  const add = (chapter, dupKeyword) => {
+    const exists = book.chapters.some(c =>
+      c.id === chapter.id || (c.title || '').includes(dupKeyword)
+    );
+    if (exists) return false;
+    book.chapters.push({ ...chapter, number: book.chapters.length + 1 });
+    return true;
+  };
 
-  book.chapters.push({ ...CH_SERVANT_LEADERSHIP, number: book.chapters.length + 1 });
-  return true;
+  let changed = false;
+  if (add(CH_SERVANT_LEADERSHIP, '僕人式領導')) changed = true;
+  if (add(CH_HABIT_BUILDING, '習慣養成術')) changed = true;
+  return changed;
 }
 
 async function seedAndMigrate() {
@@ -1834,7 +1890,7 @@ async function seedAndMigrate() {
     }
   }
 
-  if (migrateServantLeadership(data)) changed = true;
+  if (migrateLazyEfficiency(data)) changed = true;
 
   if (changed) await saveData(data);
   return data;
