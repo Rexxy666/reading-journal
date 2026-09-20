@@ -1761,34 +1761,106 @@ const CH_HABIT_BUILDING = {
   ]
 };
 
-/* 把《高效偷懶》的章節補齊。新增章節時在下方加一行即可 */
-function migrateLazyEfficiency(data) {
-  let book = data.books.find(b => (b.title || '').includes('偷懶'));
+/* ─────────── 馬斯克寶典：第一章 ─────────── */
+const CH_MUSK_MISSION = {
+  id: 'ch_musk_mission',
+  title: '活出有使命感的人生',
+  number: 1,
+  date: '2026年9月20日',
+  keywords: ['貢獻價值', '為未來而戰', '技能與興趣交集', '拒絕零和', '直面恐懼', '好奇心'],
+  notes: `一、追求貢獻價值，成為一個有用的人\n在著手創造任何事物之前，先思考這項事物是否真正對他人有用處。\n\n二、為未來而戰，為令人興奮的事物而戰\n聚焦於未來的遠景，並將精力投入在能讓自己感到興奮與熱情的事物上。\n\n三、找出「技能」與「興趣」的交集\n立足於兩者的重疊之處，以高維度的精準控制與持續優化思維來發展。\n\n四、拼命工作、把餅做大，拒絕零和思維\n全力以赴創造更大總量與價值，摒棄你輸我贏、互相爭奪的零和心態。\n\n五、直面恐懼（Face the Fear）：將成敗機率量化\n透過量化成功的機率與失敗的風險，建立客觀認知，有助於克服並面對內心的恐懼。\n\n六、常保好奇心\n對未知與世界始終保持探索的熱情。`,
+  tactics: [
+    { ctx: '動手之前', main: '先問：這件事真的對他人有用嗎', sub: '追求貢獻價值，成為一個有用的人。在著手創造任何事物之前，先思考它是否真正對他人有用處' },
+    { ctx: '選擇方向', main: '為未來、為令人興奮的事物而戰', sub: '聚焦於未來的遠景，把精力投入在能讓自己感到興奮與熱情的事物上' },
+    { ctx: '發展定位', main: '立足「技能」與「興趣」的交集', sub: '在兩者的重疊之處深耕，以高維度的精準控制與持續優化思維來發展' },
+    { ctx: '面對競爭', main: '拼命工作、把餅做大', sub: '全力以赴創造更大的總量與價值，摒棄你輸我贏、互相爭奪的零和心態' },
+    { ctx: '心生恐懼', main: '把成敗機率量化', sub: '量化成功的機率與失敗的風險，建立客觀認知，藉此克服並面對內心的恐懼' },
+    { ctx: '日常心態', main: '常保好奇心', sub: '對未知與世界始終保持探索的熱情' }
+  ],
+  techniques: [
+    {
+      name: '直面恐懼（Face the Fear）',
+      badge: '量化法',
+      body: '透過量化成功的機率與失敗的風險，建立客觀認知，有助於克服並面對內心的恐懼。',
+      flow: ['察覺恐懼', '量化成功機率', '量化失敗風險', '建立客觀認知', '克服並面對恐懼']
+    },
+    {
+      name: '技能 × 興趣交集',
+      badge: '定位法',
+      body: '不只做擅長的，也不只做喜歡的，而是立足於兩者的重疊之處，再以高維度的精準控制與持續優化思維來發展。',
+      flow: ['盤點技能', '盤點興趣', '找出重疊之處', '精準控制、持續優化']
+    },
+    {
+      name: '使命感人生的四道提問',
+      badge: '行動框架',
+      body: '把本章原則串成動手前的自我檢查：先確認有用，再確認站在交集上、朝向令人興奮的未來，最後全力把餅做大。',
+      flow: ['對他人有用嗎？', '在技能與興趣的交集上嗎？', '朝向令人興奮的未來嗎？', '全力以赴把餅做大']
+    },
+    {
+      name: '拒絕零和：把餅做大',
+      badge: '思維對照',
+      body: '零和思維是你輸我贏、互相爭奪同一塊餅；把餅做大則是拼命工作、全力以赴創造更大的總量與價值。',
+      flow: []
+    }
+  ]
+};
 
-  if (!book) {
-    book = {
-      id: 'book_lazy_efficiency',
-      title: '高效偷懶',
-      author: '',
-      createdAt: new Date().toISOString(),
-      chapters: []
-    };
-    data.books.push(book);
-  }
+/* 通用：依書名關鍵詞找書（找不到才建立），補上缺少的章節。
+   每個章節只會被種入一次（記錄在 data.appliedSeeds），
+   所以使用者之後自己刪掉章節或整本書，重新整理也不會再長回來。 */
+function ensureBookChapters(data, bookDef, chapters) {
+  if (!Array.isArray(data.appliedSeeds)) data.appliedSeeds = [];
+  const applied = data.appliedSeeds;
+  let changed = false;
+  let book = data.books.find(b => (b.title || '').includes(bookDef.match));
 
-  const add = (chapter, dupKeyword) => {
-    const exists = book.chapters.some(c =>
+  chapters.forEach(([chapter, dupKeyword]) => {
+    if (applied.includes(chapter.id)) return;
+
+    const exists = book && book.chapters.some(c =>
       c.id === chapter.id || (c.title || '').includes(dupKeyword)
     );
-    if (exists) return false;
-    book.chapters.push({ ...chapter, number: book.chapters.length + 1 });
-    return true;
-  };
 
-  let changed = false;
-  if (add(CH_SERVANT_LEADERSHIP, '僕人式領導')) changed = true;
-  if (add(CH_HABIT_BUILDING, '習慣養成術')) changed = true;
+    if (!exists) {
+      if (!book) {
+        book = {
+          id: bookDef.id,
+          title: bookDef.title,
+          author: bookDef.author || '',
+          createdAt: new Date().toISOString(),
+          chapters: []
+        };
+        data.books.push(book);
+      }
+      book.chapters.push({ ...chapter, number: book.chapters.length + 1 });
+    }
+
+    applied.push(chapter.id);
+    changed = true;
+  });
+
   return changed;
+}
+
+/* 《高效偷懶》— 新增章節時在陣列加一行即可 */
+function migrateLazyEfficiency(data) {
+  return ensureBookChapters(data,
+    { match: '偷懶', id: 'book_lazy_efficiency', title: '高效偷懶' },
+    [
+      [CH_SERVANT_LEADERSHIP, '僕人式領導'],
+      [CH_HABIT_BUILDING, '習慣養成術']
+    ]
+  );
+}
+
+/* 《馬斯克寶典》— 新增章節時在陣列加一行即可 */
+function migrateMuskBible(data) {
+  return ensureBookChapters(data,
+    { match: '馬斯克', id: 'book_musk_bible', title: '馬斯克寶典' },
+    [
+      [CH_MUSK_MISSION, '使命感']
+    ]
+  );
 }
 
 async function seedAndMigrate() {
@@ -1891,6 +1963,7 @@ async function seedAndMigrate() {
   }
 
   if (migrateLazyEfficiency(data)) changed = true;
+  if (migrateMuskBible(data)) changed = true;
 
   if (changed) await saveData(data);
   return data;
