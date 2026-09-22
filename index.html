@@ -1854,6 +1854,56 @@ const CH_MUSK_PHYSICIST = {
   ]
 };
 
+/* ─────────── 馬斯克寶典：第三章 ─────────── */
+const CH_MUSK_ENGINEERING = {
+  id: 'ch_musk_engineering',
+  title: '工程的價值',
+  number: 3,
+  date: '2026年9月22日',
+  keywords: ['執行', '工程', '技術', '創新', '落地'],
+  notes: `【核心觀點】想法不值錢，落地與執行才是關鍵\n提出去火星的想法並不困難，根本不算什麼；真正困難的是實際抵達火星。\n\n一、關於工程、技術與創新\n「工程」：創造從未存在過的事物。\n「技術」：非常重要。\n「創新」：創新的速度非常重要，但創新從來不是問題，執行才是。\n\n二、價值創造路徑\n點子 → 創新 → 執行 → 建立技術 → 辛苦解決棘手問題 → 為公司創造價值\n\n三、書中案例佐證（實打實的製造與執行）\n• 製造不是空談：鋁捲與塑膠粒從工廠一端進去，整輛車從另一端出來。\n• 包辦全套工程：涵蓋車輛工程、動力系統工程與軟體。\n• 實力證明：連豐田（Toyota）、戴姆勒（Daimler／Mercedes-Benz）都採購其電動動力系統；如果容易，傳統巨頭早就自己做了，這正是解決了困難工程問題的最好證據。`,
+  tactics: [
+    { ctx: '有了點子', main: '想法不值錢，落地與執行才是關鍵', sub: '提出去火星的想法並不困難，根本不算什麼；真正困難的是實際抵達火星' },
+    { ctx: '定義工程', main: '創造從未存在過的事物', sub: '這就是「工程」；而「技術」非常重要' },
+    { ctx: '看待創新', main: '創新從來不是問題，執行才是', sub: '創新的速度非常重要，但真正卡住價值的從來不是創新本身，而是執行' },
+    { ctx: '製造落地', main: '原料從一端進去，整輛車從另一端出來', sub: '製造不是空談：鋁捲與塑膠粒從工廠一端進去，整輛車從另一端出來' },
+    { ctx: '工程範疇', main: '包辦全套工程', sub: '涵蓋車輛工程、動力系統工程與軟體' },
+    { ctx: '檢驗實力', main: '看對手願不願意跟你買', sub: '連豐田（Toyota）、戴姆勒（Daimler／Mercedes-Benz）都採購其電動動力系統；如果容易，傳統巨頭早就自己做了' }
+  ],
+  techniques: [
+    {
+      name: '價值創造路徑',
+      badge: '主軸',
+      body: '從一個點子到真正為公司創造價值，中間隔著執行、技術與一段辛苦解決棘手問題的過程。少掉中間那幾步，點子就只是點子。',
+      flow: ['點子', '創新', '執行', '建立技術', '辛苦解決棘手問題', '為公司創造價值']
+    },
+    {
+      name: '去火星的比喻',
+      badge: '心法',
+      body: '提出去火星的想法並不困難，根本不算什麼；真正困難的是實際抵達火星。',
+      flow: ['提出想法：並不困難', '實際抵達：真正困難']
+    },
+    {
+      name: '工程・技術・創新',
+      badge: '名詞定義',
+      body: '「工程」：創造從未存在過的事物。「技術」：非常重要。「創新」：創新的速度非常重要，但創新從來不是問題，執行才是。',
+      flow: []
+    },
+    {
+      name: '實打實的製造',
+      badge: '案例佐證',
+      body: '製造不是空談。整條產線從最基本的原料開始，一路做到能開走的成品，中間包辦車輛工程、動力系統工程與軟體。',
+      flow: ['鋁捲與塑膠粒從工廠一端進去', '整輛車從另一端出來']
+    },
+    {
+      name: '巨頭採購即證明',
+      badge: '實力證明',
+      body: '判斷一項工程難不難，看市場上最有資源的玩家選擇自製還是外購。',
+      flow: ['豐田、戴姆勒採購其電動動力系統', '如果容易，傳統巨頭早就自己做了', '證明解決了困難的工程問題']
+    }
+  ]
+};
+
 /* 通用：依書名關鍵詞找書（找不到才建立），補上缺少的章節。
    每個章節只會被種入一次（記錄在 data.appliedSeeds），
    所以使用者之後自己刪掉章節或整本書，重新整理也不會再長回來。 */
@@ -1908,7 +1958,8 @@ function migrateMuskBible(data) {
     { match: '馬斯克', id: 'book_musk_bible', title: '馬斯克寶典' },
     [
       [CH_MUSK_MISSION, '使命感'],
-      [CH_MUSK_PHYSICIST, '物理學家']
+      [CH_MUSK_PHYSICIST, '物理學家'],
+      [CH_MUSK_ENGINEERING, '工程的價值']
     ]
   );
 }
@@ -2078,9 +2129,14 @@ function sealText(title) {
   const raw = String(title || '');
   const quoted = raw.match(/[「『]([^」』]{1,6})[」』]/);   // 標題含引號時，印章取引號內的關鍵詞
   const base = (quoted ? quoted[1] : raw).replace(/[「」『』（）()［］\[\]，、。：:・\s]/g, '');
-  const chars = [...base].slice(0, 4);
-  if (chars.length <= 2) return chars.join('<br>');
-  if (chars.length === 3) return chars[0] + '<br>' + chars.slice(1).join('');
+  const all = [...base];
+  if (all.length <= 2) return all.join('<br>');
+  if (all.length === 3) return all[0] + '<br>' + all.slice(1).join('');
+  if (all.length <= 6) {                      // 5～6 字的標題整個放得下，平均分兩行
+    const half = Math.ceil(all.length / 2);
+    return all.slice(0, half).join('') + '<br>' + all.slice(half).join('');
+  }
+  const chars = all.slice(0, 4);
   return chars.slice(0, 2).join('') + '<br>' + chars.slice(2).join('');
 }
 
