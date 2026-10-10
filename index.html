@@ -2142,6 +2142,65 @@ const CH_MUSK_MANUFACTURING = {
   ]
 };
 
+/* ─────────── 現代貨幣理論：第一章 ─────────── */
+const CH_MMT_FLOWS_STOCKS = {
+  id: 'ch_mmt_flows_stocks',
+  title: '流量與存量',
+  number: 1,
+  date: '2026年10月10日',
+  keywords: ['金融資產與負債', '流量與存量', '赤字與盈餘', '非負債型資產', '部門平衡'],
+  notes: `1. 金融資產與負債的對應關係\n• 一方的 Financial assets（金融資產）是另一方的 Financial debt（金融負債）。\n• 金融財富的劃分：\n   → 「內部」→ 民間組織\n   → 「外部」→ 非民間組織（例如：政府、國外部門）\n• 內部金融財富存在時間差的特性。\n\n2. 存量與流量（Flows & Stocks）\n• 流量（Flows）與存量（Stocks）的動態關係。\n• 部門收支平衡：\n   → 支出 − 收入 > 0 ＝ 赤字（支出大於收入）\n   → 支出 − 收入 < 0 ＝ 盈餘（收入大於支出）\n\n3. 非債造型資產（非負債型資產）\n• 定義與實例：如 BTC（比特幣）、Gold（黃金）等自身不具備「對應他人負債」特性的資產。\n\n4. 借貸與貨幣供給的本質\n• 銀行借出錢，憑空生出錢＋借給下一個進去。\n• 本質是：你在消耗未憑空生出來的錢（代補概念）。\n\n【補充：書本印刷文字核心對照】\n• 部門出現盈餘，那麼至少有另一個部門會出現赤字。\n• 無法所有部門同時處於盈餘狀態；每一筆盈餘必然對應著另一筆赤字。`,
+  tactics: [
+    { ctx: '看一筆金融資產', main: '找出另一方對應的負債', sub: '一方的 Financial assets（金融資產）是另一方的 Financial debt（金融負債）' },
+    { ctx: '劃分金融財富', main: '分成「內部」與「外部」', sub: '「內部」→ 民間組織；「外部」→ 非民間組織（例如：政府、國外部門）' },
+    { ctx: '看內部財富', main: '留意時間差的特性', sub: '內部金融財富存在時間差的特性' },
+    { ctx: '核心概念', main: '流量與存量的動態關係', sub: '流量（Flows）與存量（Stocks）的動態關係' },
+    { ctx: '算部門收支', main: '支出 − 收入 > 0 ＝ 赤字', sub: '支出大於收入' },
+    { ctx: '算部門收支', main: '支出 − 收入 < 0 ＝ 盈餘', sub: '收入大於支出' },
+    { ctx: '看 BTC／黃金', main: '屬於非負債型資產', sub: '自身不具備「對應他人負債」特性的資產' },
+    { ctx: '看銀行放款', main: '借出的錢是憑空生出來的', sub: '銀行借出錢，憑空生出錢＋借給下一個進去' },
+    { ctx: '某部門盈餘時', main: '至少有另一個部門赤字', sub: '無法所有部門同時處於盈餘狀態；每一筆盈餘必然對應著另一筆赤字' }
+  ],
+  techniques: [
+    {
+      name: '盈餘與赤字的對應',
+      badge: '書本核心',
+      body: '部門出現盈餘，那麼至少有另一個部門會出現赤字；每一筆盈餘必然對應著另一筆赤字。',
+      flow: ['某部門出現盈餘', '至少有另一個部門出現赤字', '無法所有部門同時盈餘']
+    },
+    {
+      name: '銀行放款的本質',
+      badge: '貨幣供給',
+      body: '銀行借出錢，憑空生出錢＋借給下一個進去。本質是：你在消耗未憑空生出來的錢（代補概念）。',
+      flow: ['銀行借出錢', '憑空生出錢', '借給下一個進去']
+    },
+    {
+      name: '部門收支平衡',
+      badge: '公式',
+      body: '支出 − 收入 > 0 ＝ 赤字（支出大於收入）；支出 − 收入 < 0 ＝ 盈餘（收入大於支出）。',
+      flow: []
+    },
+    {
+      name: '金融資產＝金融負債',
+      badge: '對應關係',
+      body: '一方的 Financial assets（金融資產）是另一方的 Financial debt（金融負債）。',
+      flow: []
+    },
+    {
+      name: '金融財富的內外之分',
+      badge: '分類',
+      body: '「內部」→ 民間組織；「外部」→ 非民間組織（例如：政府、國外部門）。內部金融財富存在時間差的特性。',
+      flow: []
+    },
+    {
+      name: '非負債型資產',
+      badge: '定義',
+      body: '如 BTC（比特幣）、Gold（黃金）等自身不具備「對應他人負債」特性的資產。',
+      flow: []
+    }
+  ]
+};
+
 /* 通用：依書名關鍵詞找書（找不到才建立），補上缺少的章節。
    每個章節只會被種入一次（記錄在 data.appliedSeeds），
    所以使用者之後自己刪掉章節或整本書，重新整理也不會再長回來。 */
@@ -2203,6 +2262,16 @@ function migrateMuskBible(data) {
       [CH_MUSK_ORG, '設計組織架構'],
       [CH_MUSK_URGENCY, '緊迫感'],
       [CH_MUSK_MANUFACTURING, '以製造為本']
+    ]
+  );
+}
+
+/* 《現代貨幣理論》— 新增章節時在陣列加一行即可 */
+function migrateMMT(data) {
+  return ensureBookChapters(data,
+    { match: '現代貨幣', id: 'book_mmt', title: '現代貨幣理論' },
+    [
+      [CH_MMT_FLOWS_STOCKS, '流量與存量']
     ]
   );
 }
@@ -2308,6 +2377,7 @@ async function seedAndMigrate() {
 
   if (migrateLazyEfficiency(data)) changed = true;
   if (migrateMuskBible(data)) changed = true;
+  if (migrateMMT(data)) changed = true;
 
   if (changed) await saveData(data);
   return data;
