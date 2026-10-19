@@ -1308,6 +1308,7 @@
   <div class="section-head">書架</div>
   <div id="book-list"></div>
   <button class="add-book-btn" onclick="showAddBook()">&#43; 新增書本</button>
+  <button class="add-book-btn" onclick="exportKnowledge()" title="把所有書與章節匯出成一份 Markdown，給 Claude 當知識庫">&#8681; 匯出知識庫（Markdown）</button>
   <div class="bottom-pad"></div>
 </div>
 
@@ -3887,6 +3888,117 @@ function renderChapterViz() {
   if (fc.cards.length) renderFlashcards();
 }
 
+/* ─────────── 匯出知識庫（Markdown） ───────────
+   把目前雲端上「所有」書與章節（包含在 App 裡手動新增、編輯過的）
+   轉成一份給 Claude 讀的 Markdown。格式固定，方便每次覆蓋更新。 */
+function buildKnowledgeMarkdown(data) {
+  const books = (data && data.books) || [];
+  const clean = s => String(s == null ? '' : s).replace(/\r/g, '').trim();
+  const oneLine = s => clean(s).replace(/\s*\n\s*/g, ' ');
+  const today = new Date();
+  const ymd = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  const chapterCount = books.reduce((n, b) => n + (b.chapters || []).length, 0);
+
+  const out = [];
+  out.push('# 讀書日誌知識庫');
+  out.push('');
+  out.push('> 匯出日期：' + ymd + '｜共 ' + books.length + ' 本書、' + chapterCount + ' 章');
+  out.push('> 來源：https://rexxy666.github.io/reading-journal/（由 App「匯出知識庫」按鈕產生，請整份覆蓋更新，不要手動改）');
+  out.push('');
+  out.push('## 給 Claude 的使用說明');
+  out.push('');
+  out.push('這份文件是 Rex 讀書後親手整理的心得，代表他學過、認同並想實踐的思維與方法。不論是聊天、開發還是深度思考：');
+  out.push('');
+  out.push('- 話題相關時（決策、溝通、帶團隊、創業、學習方法、總體經濟…），主動連結對應的書與章節，例如「這就是《馬斯克寶典》第六章的 5 步工作法」，幫他把學過的東西用出來。');
+  out.push('- 引用時以本文件為準，不要替書補上筆記裡沒有的主張；如果是你自己的延伸或與書中觀點不同，要明講。');
+  out.push('- 話題不相關就不要硬套。');
+  out.push('- 每章的「原始筆記」是 Rex 的原文；「情境策略」與「進階技法」是依原文整理的結構化版本，方便快速對照。');
+  out.push('');
+
+  // 書目與關鍵字索引
+  out.push('## 書目與關鍵字索引');
+  out.push('');
+  books.forEach(b => {
+    const chs = b.chapters || [];
+    out.push('### 《' + clean(b.title) + '》' + (b.author ? '（' + clean(b.author) + '）' : '') + '— ' + chs.length + ' 章');
+    out.push('');
+    chs.forEach((c, i) => {
+      const kws = (c.keywords || []).map(oneLine).filter(Boolean);
+      out.push((i + 1) + '. ' + oneLine(c.title) + (kws.length ? ' — ' + kws.join('、') : ''));
+    });
+    out.push('');
+  });
+
+  // 各章內容
+  books.forEach(b => {
+    out.push('---');
+    out.push('');
+    out.push('## 《' + clean(b.title) + '》');
+    out.push('');
+    (b.chapters || []).forEach((c, i) => {
+      out.push('### 第 ' + (i + 1) + ' 章　' + oneLine(c.title));
+      out.push('');
+      if (c.date) { out.push('*' + oneLine(c.date) + '*'); out.push(''); }
+
+      const kws = (c.keywords || []).map(oneLine).filter(Boolean);
+      if (kws.length) { out.push('**核心關鍵字**：' + kws.join('、')); out.push(''); }
+
+      const tactics = (c.tactics || []).filter(t => t && (t.main || t.sub));
+      if (tactics.length) {
+        out.push('**情境策略**');
+        out.push('');
+        tactics.forEach(t => {
+          const head = t.ctx ? '**' + oneLine(t.ctx) + '** → ' : '';
+          out.push('- ' + head + oneLine(t.main) + (t.sub ? '：' + oneLine(t.sub) : ''));
+        });
+        out.push('');
+      }
+
+      const techs = (c.techniques || []).filter(t => t && t.name);
+      if (techs.length) {
+        out.push('**進階技法**');
+        out.push('');
+        techs.forEach(t => {
+          out.push('- **' + oneLine(t.name) + '**' + (t.badge ? '（' + oneLine(t.badge) + '）' : '') + (t.body ? '：' + oneLine(t.body) : ''));
+          const flow = (t.flow || []).map(oneLine).filter(Boolean);
+          if (flow.length > 1) out.push('  - 流程：' + flow.join(' → '));
+        });
+        out.push('');
+      }
+
+      if (clean(c.notes)) {
+        out.push('<details><summary>原始筆記</summary>');
+        out.push('');
+        clean(c.notes).split('\n').forEach(line => out.push(line.trim() ? '> ' + line.replace(/\s+$/, '') : '>'));
+        out.push('');
+        out.push('</details>');
+        out.push('');
+      }
+    });
+  });
+
+  return out.join('\n').replace(/\n{3,}/g, '\n\n') + '\n';
+}
+
+function exportKnowledge() {
+  const md = buildKnowledgeMarkdown(_cache);
+  try {
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'reading-journal-knowledge.md';   // 用英文檔名：部分瀏覽器會吃掉中文下載檔名
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    showToast('📄 已匯出知識庫');
+  } catch (e) {
+    console.error('export failed', e);
+    showToast('⚠️ 匯出失敗');
+  }
+}
+
 /* ─────────── ESCAPE ─────────── */
 function esc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -3908,6 +4020,7 @@ window.openChapter = openChapter;
 window.navBack = navBack;
 window.navAdd = navAdd;
 window.showAddBook = showAddBook;
+window.exportKnowledge = exportKnowledge;
 window.showAddChapter = showAddChapter;
 window.showEditChapter = showEditChapter;
 window.saveBook = saveBook;
