@@ -1274,6 +1274,163 @@
     .fc-shuffle:hover { background: var(--surface2); }
   }
 
+  /* ══════════════ 總複習（QUIZ） ══════════════ */
+  .qz-entry {
+    margin: 1rem 1.25rem 0;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .qz-entry:active { transform: scale(0.98); }
+  .qz-entry-seal {
+    width: 46px; height: 46px; flex-shrink: 0;
+    background: var(--red); color: #FDE8E0;
+    border-radius: 5px;
+    font-family: var(--serif); font-weight: 700; font-size: 12px; line-height: 1.25;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+  }
+  .qz-entry-body { flex: 1; min-width: 0; }
+  .qz-entry-title { font-family: var(--serif); font-size: 16px; font-weight: 700; letter-spacing: 0.04em; }
+  .qz-entry-meta { font-size: 12px; color: var(--text3); margin-top: 3px; }
+  .qz-entry-arrow { color: var(--text3); font-size: 18px; }
+
+  .qz-wrap {
+    --green: #3B6D11;
+    --green-light: #EEF4E6;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+  .qz-hero { padding: 1.75rem 0 1.25rem; }
+  .qz-eyebrow { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .qz-date { font-family: var(--serif); font-size: 24px; font-weight: 700; letter-spacing: 0.03em; }
+  .qz-today { font-size: 13px; color: var(--text2); margin-top: 6px; line-height: 1.6; }
+
+  .qz-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem; }
+  .qz-stat { background: var(--surface); border: 0.5px solid var(--border2); border-radius: 10px; padding: 0.75rem 0.5rem; text-align: center; }
+  .qz-stat b { display: block; font-family: var(--serif); font-size: 22px; color: var(--red); font-variant-numeric: tabular-nums; }
+  .qz-stat span { font-size: 11px; color: var(--text3); }
+
+  .qz-rule { font-size: 12px; color: var(--text3); text-align: center; margin-top: 10px; line-height: 1.6; }
+
+  .qz-head { display: flex; align-items: baseline; justify-content: space-between; padding: 1.75rem 0 0.6rem; }
+  .qz-head-t { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; font-weight: 500; }
+  .qz-head-a { font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 0; }
+
+  .qz-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .qz-row {
+    display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 10px;
+    padding: 12px 14px; border-top: 0.5px solid var(--border2);
+  }
+  .qz-row:first-child { border-top: none; }
+  .qz-rank { font-family: var(--serif); font-weight: 700; font-size: 15px; color: var(--text3); text-align: center; font-variant-numeric: tabular-nums; }
+  .qz-rank.r1 { color: var(--red); font-size: 18px; }
+  .qz-rank.r2, .qz-rank.r3 { color: var(--red-dark); }
+  .qz-row-main { min-width: 0; }
+  .qz-row-t { font-size: 14px; color: var(--text); }
+  .qz-row-s { font-size: 11.5px; color: var(--text3); margin-top: 2px; }
+  .qz-row-score { font-family: var(--serif); font-weight: 700; font-size: 18px; color: var(--text); font-variant-numeric: tabular-nums; }
+  .qz-row-score small { font-size: 11px; color: var(--text3); font-weight: 400; margin-left: 2px; }
+  .qz-row.today .qz-row-t::after { content: '今天'; font-size: 10px; color: var(--red-dark); background: var(--red-light); border-radius: 10px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+  .qz-row.hl { background: var(--red-light); }
+  .qz-empty { padding: 1.5rem 1rem; text-align: center; font-size: 13px; color: var(--text3); }
+
+  .qz-spark { padding: 14px 14px 6px; }
+  .qz-spark svg { display: block; width: 100%; height: 70px; overflow: visible; }
+  .qz-spark-l { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); padding: 0 14px 10px; }
+
+  .qz-weak-go { font-size: 12px; color: var(--red); white-space: nowrap; }
+  .qz-row.click { cursor: pointer; }
+  .qz-row.click:active { background: var(--surface2); }
+  .qz-warn { margin-top: 1.25rem; font-size: 12px; color: var(--text2); background: var(--surface2); border-radius: 10px; padding: 10px 12px; line-height: 1.7; }
+
+  /* 作答 */
+  .qz-play { padding-top: 1.25rem; }
+  .qz-progress { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+  .qz-progress b { color: var(--red); font-weight: 600; }
+  .qz-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; margin-bottom: 1.5rem; }
+  .qz-bar i { display: block; height: 100%; background: var(--red); border-radius: 2px; transition: width 0.3s; }
+  .qz-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .qz-chip { font-size: 11px; border-radius: 20px; padding: 3px 9px; background: var(--surface2); color: var(--text2); }
+  .qz-chip.type { background: var(--red-light); color: var(--red-dark); font-weight: 500; }
+  .qz-q { font-family: var(--serif); font-size: 19px; font-weight: 600; line-height: 1.65; color: var(--text); margin-bottom: 1.25rem; letter-spacing: 0.02em; }
+
+  .qz-opts { display: flex; flex-direction: column; gap: 10px; }
+  .qz-opt {
+    display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left;
+    background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px;
+    padding: 13px 14px; font-family: var(--sans); font-size: 15px; line-height: 1.55; color: var(--text);
+    cursor: pointer; transition: border-color 0.15s, background 0.15s, opacity 0.15s;
+  }
+  .qz-opt:active:not(:disabled) { transform: scale(0.99); }
+  .qz-opt-k {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--surface2); color: var(--text2);
+    font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .qz-opt:disabled { cursor: default; }
+  .qz-opt.correct { border-color: var(--green); background: var(--green-light); }
+  .qz-opt.correct .qz-opt-k { background: var(--green); color: #fff; }
+  .qz-opt.wrong { border-color: var(--red); background: var(--red-light); }
+  .qz-opt.wrong .qz-opt-k { background: var(--red); color: #fff; }
+  .qz-opt.dim { opacity: 0.5; }
+
+  .qz-fill { display: flex; gap: 8px; }
+  .qz-input {
+    flex: 1; min-width: 0; font-family: var(--sans); font-size: 16px;
+    border: 0.5px solid var(--border); border-radius: 12px; padding: 13px 14px; background: var(--surface); color: var(--text);
+  }
+  .qz-input:focus { outline: none; border-color: var(--red); }
+  .qz-input.ok { border-color: var(--green); background: var(--green-light); }
+  .qz-input.ng { border-color: var(--red); background: var(--red-light); }
+  .qz-btn {
+    flex-shrink: 0; background: var(--red); color: #FDE8E0; border: none; border-radius: 12px;
+    padding: 0 18px; font-family: var(--sans); font-size: 15px; font-weight: 500; cursor: pointer;
+  }
+  .qz-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .qz-fb { margin-top: 1rem; border-radius: 12px; padding: 14px 16px; background: var(--surface); border: 0.5px solid var(--border); border-left: 3px solid var(--green); }
+  .qz-fb.ng { border-left-color: var(--red); }
+  .qz-fb-v { font-weight: 600; font-size: 14px; color: var(--green); margin-bottom: 6px; }
+  .qz-fb.ng .qz-fb-v { color: var(--red); }
+  .qz-fb-ans { font-size: 14px; color: var(--text); margin-bottom: 6px; }
+  .qz-fb-e { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .qz-fb-src { font-size: 12px; color: var(--text3); margin-top: 8px; }
+  .qz-override { margin-top: 10px; font-size: 12px; color: var(--text2); background: none; border: 0.5px solid var(--border); border-radius: 20px; padding: 5px 12px; cursor: pointer; font-family: var(--sans); }
+  .qz-quit { display: block; margin: 1.5rem auto 0; background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; font-family: var(--sans); padding: 8px; }
+  .qz-quit.armed { color: var(--red); font-weight: 500; }
+
+  /* 結算 */
+  .qz-res { text-align: center; padding: 2rem 0 0.5rem; }
+  .qz-res-score { font-family: var(--serif); font-size: 72px; font-weight: 700; color: var(--red); line-height: 1; font-variant-numeric: tabular-nums; }
+  .qz-res-score small { font-size: 20px; color: var(--text3); font-weight: 400; }
+  .qz-res-sub { font-size: 14px; color: var(--text2); margin-top: 10px; }
+  .qz-res-badge { display: inline-block; margin-top: 12px; font-size: 12px; background: var(--red); color: #FDE8E0; border-radius: 20px; padding: 4px 12px; letter-spacing: 0.04em; }
+  .qz-rv { padding: 14px 14px; border-top: 0.5px solid var(--border2); }
+  .qz-rv:first-child { border-top: none; }
+  .qz-rv-q { font-size: 14px; color: var(--text); line-height: 1.6; font-weight: 500; }
+  .qz-rv-a { font-size: 13px; margin-top: 6px; line-height: 1.6; }
+  .qz-rv-a .y { color: var(--red); text-decoration: line-through; }
+  .qz-rv-a .c { color: #3B6D11; font-weight: 500; }
+  .qz-rv-e { font-size: 12.5px; color: var(--text2); margin-top: 4px; line-height: 1.65; }
+  .qz-rv-s { font-size: 11.5px; color: var(--text3); margin-top: 4px; }
+
+  @media (min-width: 1024px) {
+    .qz-entry { max-width: var(--col); margin-left: auto; margin-right: auto; }
+    .qz-entry:hover { border-color: var(--red-mid); }
+    .qz-opt:hover:not(:disabled) { border-color: var(--red-mid); }
+    .qz-q { font-size: 21px; }
+    .qz-date { font-size: 28px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1304,6 +1461,14 @@
       <span class="stat-num" id="stat-chapters">0</span>
       <div class="stat-label">篇心得</div>
     </div>
+  </div>
+  <div class="qz-entry" onclick="openQuiz()">
+    <div class="qz-entry-seal">總<br>複習</div>
+    <div class="qz-entry-body">
+      <div class="qz-entry-title">總複習測驗</div>
+      <div class="qz-entry-meta" id="qz-entry-meta">25 題一回 · 一題 4 分</div>
+    </div>
+    <div class="qz-entry-arrow">&#8250;</div>
   </div>
   <div class="section-head">書架</div>
   <div id="book-list"></div>
@@ -1382,6 +1547,11 @@
     <button class="btn-ghost" onclick="navBack()">取消</button>
   </div>
   <div class="bottom-pad"></div>
+</div>
+
+<!-- ═══════════════ VIEW: QUIZ（總複習） ═══════════════ -->
+<div class="view" id="view-quiz">
+  <div id="quiz-root"></div>
 </div>
 
 <!-- ═══════════════ VIEW: EDIT CHAPTER ═══════════════ -->
@@ -3039,7 +3209,7 @@ function showView(name, pushHistory = true) {
   const title = document.getElementById('nav-title');
 
   const noBack = ['home', 'add-book', 'add-chapter'];
-  const noAdd = ['add-book', 'add-chapter'];
+  const noAdd = ['add-book', 'add-chapter', 'quiz'];
 
   backBtn.style.display = noBack.includes(name) ? 'none' : 'flex';
   addBtn.style.display = noAdd.includes(name) ? 'none' : 'flex';
@@ -3050,7 +3220,8 @@ function showView(name, pushHistory = true) {
     'chapter': currentChapter()?.title || '章節',
     'add-book': '新增書本',
     'add-chapter': '章節心得',
-    'edit-chapter': '編輯心得'
+    'edit-chapter': '編輯心得',
+    'quiz': '總複習'
   };
   title.textContent = titles[name] || '讀書日誌';
 
@@ -3114,6 +3285,7 @@ function renderHome() {
   const today = new Date();
   const fmt = today.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
   document.getElementById('home-sub-date').textContent = fmt;
+  qzRenderEntry();
 
   const listEl = document.getElementById('book-list');
   if (data.books.length === 0) {
@@ -4122,6 +4294,455 @@ function exportKnowledge() {
   }
 }
 
+/* ─────────── 總複習（QUIZ） ───────────
+   題庫：同目錄 quiz-bank.json（新增心得時一併補題）
+   成績：Firestore journal/quiz → { rounds: [...], stats: { 題目id: { s 作答次數, w 答錯次數 } } } */
+const QUIZ_DOC = doc(db, 'journal', 'quiz');
+const QZ_LEN = 25, QZ_PTS = 4, QZ_PER_CH = 2, QZ_LS = 'rj-quiz-backup';
+const QZ_WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+let qzBank = null;
+let qzData = { rounds: [], stats: {} };
+let qzReady = false;
+let qz = null;            // 進行中的一回
+let qzLastRound = null;   // 剛完成的一回（結算頁用）
+let qzShowAll = false;
+
+function qzDay(ts) {
+  const d = new Date(ts);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function qzDayLabel(ts) {
+  const d = new Date(ts);
+  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日（${QZ_WEEK[d.getDay()]}）`;
+}
+function qzShort(ts) {
+  const d = new Date(ts);
+  return `${d.getMonth() + 1}/${d.getDate()}（${QZ_WEEK[d.getDay()]}）${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+function qzDur(sec) {
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return m ? `${m} 分 ${s} 秒` : `${s} 秒`;
+}
+function qzShuffle(a) {
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; }
+  return r;
+}
+function qzNorm(s) {
+  return String(s || '')
+    .replace(/[Ａ-Ｚａ-ｚ０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .toLowerCase()
+    .replace(/[\s「」『』（）()、，,。.．・:：;；!！?？"'“”‘’《》〈〉\-—_/／~～]/g, '');
+}
+function qzRanked() {
+  return qzData.rounds.slice().sort((a, b) => b.score - a.score || a.dur - b.dur || a.ts - b.ts);
+}
+
+async function qzLoadBank() {
+  if (qzBank) return qzBank;
+  try {
+    const res = await fetch('quiz-bank.json', { cache: 'no-cache' });
+    const json = await res.json();
+    qzBank = json.questions || [];
+  } catch (e) {
+    console.error('quiz bank load failed', e);
+    qzBank = [];
+  }
+  return qzBank;
+}
+
+async function qzLoadData() {
+  let local = null;
+  try { local = JSON.parse(localStorage.getItem(QZ_LS) || 'null'); } catch (e) {}
+  try {
+    const snap = await getDoc(QUIZ_DOC);
+    const d = snap.exists() ? snap.data() : {};
+    qzData = { rounds: d.rounds || [], stats: d.stats || {} };
+    // 上次雲端寫入失敗、只存在本機的成績 → 補回雲端
+    if (local && (local.rounds || []).length > qzData.rounds.length) {
+      qzData = { rounds: local.rounds, stats: local.stats || {} };
+      qzSave(true);
+    }
+  } catch (e) {
+    console.warn('quiz data load failed', e);
+    if (local) qzData = { rounds: local.rounds || [], stats: local.stats || {} };
+  }
+  qzReady = true;
+}
+
+async function qzSave(silent) {
+  try { localStorage.setItem(QZ_LS, JSON.stringify(qzData)); } catch (e) {}
+  try {
+    await setDoc(QUIZ_DOC, qzData);
+  } catch (e) {
+    console.error('quiz save failed', e);
+    if (!silent) showToast('⚠️ 雲端儲存失敗，成績先存在這台裝置');
+  }
+}
+
+/* 首頁入口卡 */
+function qzRenderEntry() {
+  const el = document.getElementById('qz-entry-meta');
+  if (!el) return;
+  if (!qzBank || !qzReady) { el.textContent = '25 題一回 · 一題 4 分'; return; }
+  const today = qzDay(Date.now());
+  const best = qzData.rounds.reduce((m, r) => Math.max(m, r.score), -1);
+  const doneToday = qzData.rounds.filter(r => r.day === today).length;
+  const parts = [`題庫 ${qzBank.length} 題`];
+  if (best >= 0) parts.push(`最佳 ${best} 分`);
+  parts.push(doneToday ? `今天已挑戰 ${doneToday} 回` : '今天還沒挑戰');
+  el.textContent = parts.join(' · ');
+}
+
+async function openQuiz() {
+  showView('quiz');
+  const root = document.getElementById('quiz-root');
+  if (qz && !qz.done) { qzRenderQuestion(); return; }
+  if (!qzBank || !qzReady) {
+    root.innerHTML = `<div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-title">載入題庫中...</div></div>`;
+    await Promise.all([qzLoadBank(), qzReady ? null : qzLoadData()]);
+  }
+  qzRenderLobby();
+}
+
+/* ── 大廳：日期、統計、排行、紀錄、弱點 ── */
+function qzRenderLobby() {
+  const root = document.getElementById('quiz-root');
+  const now = Date.now();
+  const today = qzDay(now);
+  const rounds = qzData.rounds;
+  const ranked = qzRanked();
+  const todays = rounds.filter(r => r.day === today);
+  const best = ranked[0];
+  const avg = rounds.length ? Math.round(rounds.reduce((a, r) => a + r.score, 0) / rounds.length) : null;
+
+  const todayLine = todays.length
+    ? `今天已完成 ${todays.length} 回，今日最佳 ${Math.max(...todays.map(r => r.score))} 分`
+    : '今天還沒開始，來一回吧';
+
+  // 排行榜 Top 10
+  const rankHtml = ranked.length ? ranked.slice(0, 10).map((r, i) => `
+    <div class="qz-row${r.day === today ? ' today' : ''}${qzLastRound && r.id === qzLastRound.id ? ' hl' : ''}">
+      <div class="qz-rank r${i + 1}">${i + 1}</div>
+      <div class="qz-row-main">
+        <div class="qz-row-t">${qzDayLabel(r.ts)}</div>
+        <div class="qz-row-s">答對 ${r.correct}/${r.total} · 用時 ${qzDur(r.dur)}</div>
+      </div>
+      <div class="qz-row-score">${r.score}<small>分</small></div>
+    </div>`).join('') : `<div class="qz-empty">還沒有成績，完成第一回就會上榜</div>`;
+
+  // 歷史紀錄（新到舊）+ 走勢
+  const hist = rounds.slice().reverse();
+  const shown = qzShowAll ? hist : hist.slice(0, 10);
+  let spark = '';
+  if (rounds.length >= 2) {
+    const pts = rounds.slice(-20);
+    const W = 300, H = 70, n = pts.length;
+    const xy = pts.map((r, i) => [(i / (n - 1)) * W, H - (r.score / 100) * H]);
+    spark = `<div class="qz-spark"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+        <line x1="0" y1="${H / 2}" x2="${W}" y2="${H / 2}" stroke="rgba(0,0,0,0.08)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
+        <polyline points="${xy.map(p => p.join(',')).join(' ')}" fill="none" stroke="#993C1D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      </svg></div>
+      <div class="qz-spark-l"><span>近 ${n} 回走勢</span><span>平均 ${avg} 分</span></div>`;
+  }
+  const histHtml = hist.length ? spark + shown.map(r => `
+    <div class="qz-row${r.day === today ? ' today' : ''}">
+      <div class="qz-rank" style="font-size:12px;">#${rounds.indexOf(r) + 1}</div>
+      <div class="qz-row-main">
+        <div class="qz-row-t">${qzShort(r.ts)}</div>
+        <div class="qz-row-s">答對 ${r.correct}/${r.total} · ${qzDur(r.dur)}</div>
+      </div>
+      <div class="qz-row-score">${r.score}<small>分</small></div>
+    </div>`).join('') : `<div class="qz-empty">每完成一回都會記在這裡</div>`;
+
+  // 弱點章節：至少作答 2 次、錯誤率最高的 5 章
+  const byCh = {};
+  const qIndex = Object.fromEntries((qzBank || []).map(q => [q.id, q]));
+  Object.entries(qzData.stats).forEach(([id, s]) => {
+    const q = qIndex[id]; if (!q) return;
+    const k = q.b + '#' + q.ch;
+    byCh[k] = byCh[k] || { b: q.b, ch: q.ch, ct: q.ct, s: 0, w: 0 };
+    byCh[k].s += s.s; byCh[k].w += s.w;
+  });
+  const weak = Object.values(byCh).filter(c => c.s >= 2 && c.w > 0)
+    .sort((a, b) => b.w / b.s - a.w / a.s || b.w - a.w).slice(0, 5);
+  const weakHtml = weak.length ? `
+    <div class="qz-head"><span class="qz-head-t">待加強的章節</span></div>
+    <div class="qz-card">${weak.map(c => `
+      <div class="qz-row click" data-b="${esc(c.b)}" data-ct="${esc(c.ct)}" onclick="qzGoChapter(this.dataset.b, this.dataset.ct)">
+        <div class="qz-rank" style="font-size:12px;">${Math.round(c.w / c.s * 100)}%</div>
+        <div class="qz-row-main">
+          <div class="qz-row-t">${esc(c.ct)}</div>
+          <div class="qz-row-s">《${esc(c.b)}》第 ${c.ch} 章 · 錯 ${c.w} / ${c.s} 次</div>
+        </div>
+        <div class="qz-weak-go">去複習 ›</div>
+      </div>`).join('')}</div>` : '';
+
+  // 題庫涵蓋檢查：App 裡有、題庫還沒題目的章節
+  const covered = new Set((qzBank || []).map(q => q.b + '#' + q.ct));
+  const missing = [];
+  (_cache.books || []).forEach(b => (b.chapters || []).forEach(c => {
+    if (!covered.has(b.title + '#' + c.title)) missing.push(`《${b.title}》${c.title}`);
+  }));
+  const warnHtml = missing.length
+    ? `<div class="qz-warn">📝 這些心得還沒有題目：${missing.map(esc).join('、')}<br>請 Claude 幫你補進題庫。</div>` : '';
+
+  root.innerHTML = `
+    <div class="qz-wrap">
+      <div class="qz-hero">
+        <div class="qz-eyebrow">TOTAL REVIEW · 總複習</div>
+        <div class="qz-date">${qzDayLabel(now)}</div>
+        <div class="qz-today">${todayLine}</div>
+      </div>
+      <div class="qz-stats">
+        <div class="qz-stat"><b>${best ? best.score : '—'}</b><span>最高分</span></div>
+        <div class="qz-stat"><b>${rounds.length}</b><span>已完成回合</span></div>
+        <div class="qz-stat"><b>${(qzBank || []).length}</b><span>題庫題數</span></div>
+      </div>
+      <button class="btn-primary" onclick="qzStart()" ${(qzBank || []).length ? '' : 'disabled'}>開始一回（${QZ_LEN} 題）</button>
+      <div class="qz-rule">從 7 本書、所有心得隨機抽題，一題 ${QZ_PTS} 分，滿分 100<br>答錯過的題目之後會更常出現</div>
+
+      <div class="qz-head"><span class="qz-head-t">排行榜 TOP 10</span></div>
+      <div class="qz-card">${rankHtml}</div>
+
+      <div class="qz-head">
+        <span class="qz-head-t">歷史紀錄</span>
+        ${hist.length > 10 ? `<button class="qz-head-a" onclick="qzToggleAll()">${qzShowAll ? '收合' : `顯示全部 ${hist.length} 回`}</button>` : ''}
+      </div>
+      <div class="qz-card">${histHtml}</div>
+      ${weakHtml}
+      ${warnHtml}
+    </div>
+    <div class="bottom-pad"></div>`;
+}
+
+function qzToggleAll() { qzShowAll = !qzShowAll; qzRenderLobby(); }
+
+function qzGoChapter(bookTitle, chTitle) {
+  const book = (_cache.books || []).find(b => b.title === bookTitle);
+  const ch = book && book.chapters.find(c => c.title === chTitle);
+  if (!book || !ch) { showToast('找不到這個章節'); return; }
+  state.bookId = book.id;
+  openChapter(ch.id);
+}
+
+/* ── 抽題：加權隨機（沒做過、常錯的優先；上兩回出現過的降權），每章最多 2 題 ── */
+function qzPick() {
+  const recent = new Set(qzData.rounds.slice(-2).flatMap(r => r.ids || []));
+  const scored = qzBank.map(q => {
+    const s = qzData.stats[q.id];
+    let w = s ? 1 + 3 * (s.w / Math.max(1, s.s)) : 2.5;
+    if (recent.has(q.id)) w *= 0.25;
+    return { q, k: Math.pow(Math.random(), 1 / w) };
+  }).sort((a, b) => b.k - a.k);
+  const per = {}, picked = [], rest = [];
+  for (const { q } of scored) {
+    const key = q.b + '#' + q.ch;
+    if ((per[key] || 0) < QZ_PER_CH && picked.length < QZ_LEN) { per[key] = (per[key] || 0) + 1; picked.push(q); }
+    else rest.push(q);
+  }
+  while (picked.length < QZ_LEN && rest.length) picked.push(rest.shift());
+  return qzShuffle(picked);
+}
+
+function qzStart() {
+  if (!qzBank || !qzBank.length) return;
+  qzLastRound = null;
+  qz = {
+    qs: qzPick().map(q => q.t === 'mc' ? { ...q, opts: qzShuffle(q.o) } : { ...q }),
+    i: 0, res: [], start: Date.now(), locked: false, done: false, quitArmed: false
+  };
+  qzRenderQuestion();
+}
+
+function qzRenderQuestion() {
+  const root = document.getElementById('quiz-root');
+  const q = qz.qs[qz.i];
+  const n = qz.qs.length;
+  const correct = qz.res.filter(r => r.ok).length;
+  const body = q.t === 'mc'
+    ? `<div class="qz-opts">${q.opts.map((o, k) => `
+        <button class="qz-opt" data-k="${k}" onclick="qzPickOpt(${k})"><span class="qz-opt-k">${'ABCD'[k]}</span><span>${esc(o)}</span></button>`).join('')}
+      </div>`
+    : `<div class="qz-fill">
+        <input class="qz-input" id="qz-input" type="text" placeholder="輸入答案" autocomplete="off" enterkeyhint="done">
+        <button class="qz-btn" id="qz-submit" onclick="qzSubmitFill()">送出</button>
+      </div>`;
+  root.innerHTML = `
+    <div class="qz-wrap qz-play">
+      <div class="qz-progress"><span>第 <b>${qz.i + 1}</b> / ${n} 題</span><span>目前 ${correct * QZ_PTS} 分</span></div>
+      <div class="qz-bar"><i style="width:${(qz.i / n) * 100}%"></i></div>
+      <div class="qz-meta">
+        <span class="qz-chip type">${q.t === 'mc' ? '選擇題' : '填充題'}</span>
+        <span class="qz-chip">《${esc(q.b)}》第 ${q.ch} 章</span>
+      </div>
+      <div class="qz-q">${esc(q.q)}</div>
+      ${body}
+      <div id="qz-fb"></div>
+      <button class="qz-quit" id="qz-quit" onclick="qzQuit()">放棄這一回</button>
+    </div>
+    <div class="bottom-pad"></div>`;
+  qz.locked = false;
+  qz.quitArmed = false;
+  window.scrollTo(0, 0);
+  if (q.t === 'fill') {
+    const inp = document.getElementById('qz-input');
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); e.stopPropagation(); qzSubmitFill(); } });
+    if (window.matchMedia('(min-width: 1024px)').matches) inp.focus();
+  }
+}
+
+function qzFeedback(ok, q, answerText) {
+  const last = qz.i === qz.qs.length - 1;
+  document.getElementById('qz-fb').innerHTML = `
+    <div class="qz-fb${ok ? '' : ' ng'}">
+      <div class="qz-fb-v">${ok ? '✓ 答對了' : '✗ 答錯了'}</div>
+      ${ok ? '' : `<div class="qz-fb-ans">正確答案：<b>${esc(answerText)}</b></div>`}
+      <div class="qz-fb-e">${esc(q.e)}</div>
+      <div class="qz-fb-src">出自《${esc(q.b)}》第 ${q.ch} 章〈${esc(q.ct)}〉</div>
+      ${!ok && q.t === 'fill' ? `<button class="qz-override" onclick="qzOverride()">意思一樣，算我對</button>` : ''}
+    </div>
+    <button class="btn-primary" id="qz-next" style="margin-top:12px;" onclick="qzNext()">${last ? '看成績' : '下一題'}</button>`;
+  const fb = document.getElementById('qz-fb');
+  if (fb.getBoundingClientRect().bottom > window.innerHeight) fb.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+function qzPickOpt(k) {
+  if (!qz || qz.locked) return;
+  qz.locked = true;
+  const q = qz.qs[qz.i];
+  const right = q.o[0];
+  const ok = q.opts[k] === right;
+  qz.res.push({ id: q.id, ok, given: q.opts[k] });
+  document.querySelectorAll('.qz-opt').forEach(btn => {
+    const kk = +btn.dataset.k;
+    btn.disabled = true;
+    if (q.opts[kk] === right) btn.classList.add('correct');
+    else if (kk === k) btn.classList.add('wrong');
+    else btn.classList.add('dim');
+  });
+  qzFeedback(ok, q, right);
+}
+
+function qzSubmitFill() {
+  if (!qz || qz.locked) return;
+  const inp = document.getElementById('qz-input');
+  const val = inp.value.trim();
+  if (!val) { inp.focus(); return; }
+  qz.locked = true;
+  const q = qz.qs[qz.i];
+  const ok = q.a.some(a => qzNorm(a) === qzNorm(val));
+  qz.res.push({ id: q.id, ok, given: val });
+  inp.disabled = true;
+  inp.classList.add(ok ? 'ok' : 'ng');
+  document.getElementById('qz-submit').disabled = true;
+  qzFeedback(ok, q, q.a[0]);
+}
+
+function qzOverride() {
+  const r = qz.res[qz.res.length - 1];
+  if (!r || r.ok) return;
+  r.ok = true; r.override = true;
+  const inp = document.getElementById('qz-input');
+  if (inp) { inp.classList.remove('ng'); inp.classList.add('ok'); }
+  const q = qz.qs[qz.i];
+  qzFeedback(true, q, q.a[0]);
+  document.querySelector('.qz-progress span:last-child').textContent = `目前 ${qz.res.filter(x => x.ok).length * QZ_PTS} 分`;
+}
+
+function qzNext() {
+  if (!qz || !qz.locked) return;
+  if (qz.i < qz.qs.length - 1) { qz.i++; qzRenderQuestion(); }
+  else qzFinish();
+}
+
+function qzQuit() {
+  const b = document.getElementById('qz-quit');
+  if (!qz.quitArmed) {
+    qz.quitArmed = true;
+    b.classList.add('armed');
+    b.textContent = '再按一次確認放棄（不計分）';
+    setTimeout(() => { if (qz && qz.quitArmed && b.isConnected) { qz.quitArmed = false; b.classList.remove('armed'); b.textContent = '放棄這一回'; } }, 3000);
+    return;
+  }
+  qz = null;
+  qzRenderLobby();
+}
+
+async function qzFinish() {
+  const now = Date.now();
+  const correct = qz.res.filter(r => r.ok).length;
+  const total = qz.qs.length;
+  const round = {
+    id: uid(), ts: now, day: qzDay(now),
+    score: Math.round(correct / total * 100),
+    correct, total,
+    dur: Math.round((now - qz.start) / 1000),
+    ids: qz.qs.map(q => q.id),
+    wrong: qz.res.filter(r => !r.ok).map(r => r.id)
+  };
+  const prevBest = qzData.rounds.reduce((m, r) => Math.max(m, r.score), -1);
+  qz.res.forEach(r => {
+    const s = qzData.stats[r.id] || { s: 0, w: 0 };
+    s.s += 1; if (!r.ok) s.w += 1;
+    qzData.stats[r.id] = s;
+  });
+  qzData.rounds.push(round);
+  if (qzData.rounds.length > 500) qzData.rounds = qzData.rounds.slice(-500);
+  const review = qz.qs.map((q, i) => ({ q, r: qz.res[i] })).filter(x => !x.r.ok);
+  qz.done = true;
+  qzLastRound = round;
+  qzRenderResult(round, review, prevBest);
+  qzRenderEntry();
+  await qzSave();
+}
+
+function qzRenderResult(round, review, prevBest) {
+  const root = document.getElementById('quiz-root');
+  const rank = qzRanked().findIndex(r => r.id === round.id) + 1;
+  const badge = prevBest < 0 ? '第一回紀錄' : round.score > prevBest ? '🎉 新紀錄！' : round.score === 100 ? '滿分！' : '';
+  const reviewHtml = review.length ? review.map(({ q, r }) => `
+    <div class="qz-rv">
+      <div class="qz-rv-q">${esc(q.q)}</div>
+      <div class="qz-rv-a">你的答案：<span class="y">${esc(r.given)}</span>　正解：<span class="c">${esc(q.t === 'mc' ? q.o[0] : q.a[0])}</span></div>
+      <div class="qz-rv-e">${esc(q.e)}</div>
+      <div class="qz-rv-s">《${esc(q.b)}》第 ${q.ch} 章〈${esc(q.ct)}〉</div>
+    </div>`).join('') : `<div class="qz-empty">全對，沒有錯題 👏</div>`;
+  root.innerHTML = `
+    <div class="qz-wrap">
+      <div class="qz-res">
+        <div class="qz-eyebrow">${qzDayLabel(round.ts)}</div>
+        <div class="qz-res-score">${round.score}<small> / 100</small></div>
+        <div class="qz-res-sub">答對 ${round.correct} / ${round.total} 題 · 用時 ${qzDur(round.dur)} · 排行第 ${rank} 名</div>
+        ${badge ? `<div class="qz-res-badge">${badge}</div>` : ''}
+      </div>
+      <button class="btn-primary" style="margin-top:1.25rem;" onclick="qzStart()">再來一回</button>
+      <button class="btn-ghost" onclick="qzBackLobby()">看排行與紀錄</button>
+      <div class="qz-head"><span class="qz-head-t">錯題回顧（${review.length}）</span></div>
+      <div class="qz-card">${reviewHtml}</div>
+    </div>
+    <div class="bottom-pad"></div>`;
+  window.scrollTo(0, 0);
+}
+
+function qzBackLobby() { qz = null; qzRenderLobby(); window.scrollTo(0, 0); }
+
+// 桌面快捷鍵：1–4 / A–D 選答案，Enter 下一題
+document.addEventListener('keydown', e => {
+  if (state.view !== 'quiz' || !qz || qz.done) return;
+  if (e.target && e.target.tagName === 'INPUT') return;
+  const q = qz.qs[qz.i];
+  if (!qz.locked && q.t === 'mc') {
+    const k = '1234'.indexOf(e.key) >= 0 ? '1234'.indexOf(e.key) : 'abcd'.indexOf(e.key.toLowerCase());
+    if (k >= 0 && e.key.length === 1) { e.preventDefault(); qzPickOpt(k); }
+  } else if (qz.locked && e.key === 'Enter') {
+    e.preventDefault(); qzNext();
+  }
+});
+
+// 背景預先載入，首頁入口卡才有題數與最佳分
+Promise.all([qzLoadBank(), qzLoadData()]).then(qzRenderEntry);
+
 /* ─────────── ESCAPE ─────────── */
 function esc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -4158,6 +4779,16 @@ window.mindmapReset = mindmapReset;
 window.fcFlip = fcFlip;
 window.fcMove = fcMove;
 window.fcShuffle = fcShuffle;
+window.openQuiz = openQuiz;
+window.qzStart = qzStart;
+window.qzPickOpt = qzPickOpt;
+window.qzSubmitFill = qzSubmitFill;
+window.qzOverride = qzOverride;
+window.qzNext = qzNext;
+window.qzQuit = qzQuit;
+window.qzToggleAll = qzToggleAll;
+window.qzGoChapter = qzGoChapter;
+window.qzBackLobby = qzBackLobby;
 
 init();
 </script>
