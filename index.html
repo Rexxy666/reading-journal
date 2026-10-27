@@ -2870,6 +2870,50 @@ const CH_MENSA_HABITS = {
   ]
 };
 
+const CH_MENSA_TIME = {
+  id: "ch_mensa_time",
+  title: "世界頂尖聰明人的時間規劃",
+  seal: "時間|規劃",
+  number: 3,
+  date: "2026年10月27日",
+  keywords: ["設定期限", "行動減量", "To-do／Not-to-do", "Checklist", "記錄努力", "量化目標"],
+  notes: `一、目標達成與行動減量\n• 設定期限：為達成目標設定明確的完成期限。\n• 減少做事的數量（聚焦）：\n   → 只做「該做之事」\n   → 不做「不該做之事」\n• 建立清單管理：\n   → To-do list（該做清單）& Not-to-do list（不該做清單）\n   → 彙整並轉化為具體執行的 Checklist（檢核表）\n\n二、動機維持與目標設定\n• 記錄自己的努力：持續記錄過程，這是維持動力與動機的關鍵。\n• 擬定量化目標：透過具體數據量化目標，藉此清楚掌握「目標」與「現狀」之間的差距。`,
+  tactics: [
+    { ctx: "設定目標時", main: "設定明確的完成期限", sub: "為達成目標設定明確的完成期限" },
+    { ctx: "事情太多時", main: "減少做事的數量，聚焦", sub: "只做「該做之事」，不做「不該做之事」" },
+    { ctx: "規劃行動", main: "同時列出 To-do list 與 Not-to-do list", sub: "該做清單 & 不該做清單" },
+    { ctx: "落地執行", main: "彙整成具體的 Checklist", sub: "把兩份清單轉化為具體執行的檢核表" },
+    { ctx: "動力下滑時", main: "記錄自己的努力", sub: "持續記錄過程，這是維持動力與動機的關鍵" },
+    { ctx: "擬定目標", main: "用具體數據量化目標", sub: "清楚掌握「目標」與「現狀」之間的差距" }
+  ],
+  techniques: [
+    {
+      name: "目標達成與行動減量",
+      badge: "時間規劃",
+      body: "為目標設定明確期限，並減少做事的數量：只做該做之事、不做不該做之事，再透過清單管理落實到執行。",
+      flow: ["設定明確的完成期限", "減少做事的數量（聚焦）", "列出 To-do & Not-to-do list", "彙整成 Checklist 執行"]
+    },
+    {
+      name: "雙清單管理",
+      badge: "清單管理",
+      body: "To-do list（該做清單）管「該做之事」，Not-to-do list（不該做清單）管「不該做之事」，兩者彙整並轉化為具體執行的 Checklist（檢核表）。",
+      flow: ["To-do list（該做清單）", "Not-to-do list（不該做清單）", "彙整", "Checklist（檢核表）"]
+    },
+    {
+      name: "記錄自己的努力",
+      badge: "動機維持",
+      body: "持續記錄過程，這是維持動力與動機的關鍵。",
+      flow: ["持續記錄自己的努力", "維持動力與動機"]
+    },
+    {
+      name: "擬定量化目標",
+      badge: "目標設定",
+      body: "透過具體數據量化目標，藉此清楚掌握「目標」與「現狀」之間的差距。",
+      flow: ["用具體數據量化目標", "對照現狀", "掌握目標與現狀的差距"]
+    }
+  ]
+};
+
 /* ─────────── 馬斯克寶典：第十四章 ─────────── */
 const CH_MUSK_SURVIVAL = {
   id: 'ch_musk_survival',
@@ -3081,7 +3125,8 @@ function migrateMensa(data) {
     { match: '門薩', id: 'book_mensa', title: '我跟門薩學的用腦好習慣' },
     [
       [CH_MENSA_SMART, '頂尖聰明人'],
-      [CH_MENSA_HABITS, '時時留意']
+      [CH_MENSA_HABITS, '時時留意'],
+      [CH_MENSA_TIME, '時間規劃']
     ]
   );
 }
