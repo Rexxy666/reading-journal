@@ -245,6 +245,24 @@
     gap: 1rem;
   }
 
+  /* 書封 */
+  .book-cover {
+    flex-shrink: 0;
+    padding: 12px 0 12px 12px;
+    display: flex;
+    align-items: center;
+  }
+  .book-cover img, .book-cover-lg {
+    display: block;
+    width: 64px;
+    aspect-ratio: 300 / 425;
+    object-fit: cover;
+    border-radius: 3px 5px 5px 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 4px 10px rgba(0,0,0,0.10);
+    background: var(--surface2);
+  }
+  .book-cover-lg { width: 60px; flex-shrink: 0; }
+
   .book-seal {
     width: 52px;
     height: 52px;
@@ -1264,6 +1282,8 @@
     .home-sub { font-size: 14px; }
     .stat-num { font-size: 26px; }
     .book-card-title { font-size: 18px; }
+    .book-cover img { width: 72px; }
+    .book-cover-lg { width: 68px; }
     .chapter-list-title { font-size: 16px; }
     .empty-title { font-size: 20px; }
 
@@ -3455,6 +3475,22 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
+/* ─────────── 書封 ───────────
+   封面圖放在 repo 的 covers/，依書名對應；book.cover 有值時優先用它。沒有封面的書維持原本的紅色書脊。 */
+const BOOK_COVERS = {
+  '辦事兵法': 'covers/bs.jpg',
+  'MBA行銷經典': 'covers/mba.jpg',
+  '選擇權策略（上）': 'covers/opt.jpg',
+  '高效偷懶': 'covers/lazy.jpg',
+  '馬斯克寶典': 'covers/musk.jpg',
+  '現代貨幣理論': 'covers/mmt.jpg',
+  '我跟門薩學的用腦好習慣': 'covers/mensa.jpg',
+  '從0到1': 'covers/zero.jpg'
+};
+function bookCover(book) {
+  return (book && (book.cover || BOOK_COVERS[book.title])) || '';
+}
+
 /* ─────────── HOME ─────────── */
 function renderHome() {
   const data = _cache;
@@ -3475,7 +3511,7 @@ function renderHome() {
   listEl.innerHTML = data.books.map(book => `
     <div class="book-card" onclick="openBook('${book.id}')">
       <div class="book-card-inner">
-        <div class="book-spine"></div>
+        ${bookCover(book) ? `<div class="book-cover"><img src="${esc(bookCover(book))}" alt="《${esc(book.title)}》封面" loading="lazy"></div>` : '<div class="book-spine"></div>'}
         <div class="book-card-body">
           <div class="book-card-title">${esc(book.title)}</div>
           <div class="book-card-meta">${book.author ? esc(book.author) + '　' : ''}${book.chapters.length} 篇心得</div>
@@ -3504,7 +3540,7 @@ function renderBook() {
 
   document.getElementById('book-header-content').innerHTML = `
     <div class="book-detail-header">
-      <div class="book-seal">${sealText(book.title)}</div>
+      ${bookCover(book) ? `<img class="book-cover-lg" src="${esc(bookCover(book))}" alt="《${esc(book.title)}》封面">` : `<div class="book-seal">${sealText(book.title)}</div>`}
       <div class="book-detail-info">
         <div class="book-detail-title">${esc(book.title)}</div>
         <div class="book-detail-sub">${book.author ? esc(book.author) + '　' : ''}${book.chapters.length} 篇心得</div>
