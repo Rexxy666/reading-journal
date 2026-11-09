@@ -3038,6 +3038,128 @@ const CH_MMT_DEFICIT = {
 /* 通用：依書名關鍵詞找書（找不到才建立），補上缺少的章節。
    每個章節只會被種入一次（記錄在 data.appliedSeeds），
    所以使用者之後自己刪掉章節或整本書，重新整理也不會再長回來。 */
+
+/* ── 《從0到1》 ── */
+const CH_ZERO_FUTURE = {
+  id: "ch_zero_future",
+  title: "未來的挑戰",
+  seal: "未來|挑戰",
+  number: 1,
+  date: "2026年11月9日",
+  keywords: ["非主流看法", "水平進步 1→N", "垂直進步 0→1", "全球化", "科技", "新思維", "小規模"],
+  notes: `• 要能提出非主流的看法\n\n• Horizontal or extensive progress（水平／延伸式進步）\n   → 1 → N（copy success，複製成功）→ 全球化\n\n• Vertical or intensive progress（垂直／密集式進步）\n   → 0 → 1（開發新事物）→ 科技\n\n• 新創必備 → 「新思維」、「小規模」\n   → 有思考空間`,
+  tactics: [
+    { ctx: "形成觀點時", main: "要能提出非主流的看法", sub: "" },
+    { ctx: "看「1 → N」", main: "水平（延伸式）進步：複製成功", sub: "Copy success → 全球化" },
+    { ctx: "看「0 → 1」", main: "垂直（密集式）進步：開發新事物", sub: "開發新事物 → 科技" },
+    { ctx: "打造新創", main: "必備「新思維」與「小規模」", sub: "小規模才有思考空間" }
+  ],
+  techniques: [
+    {
+      name: "水平進步（1 → N）",
+      badge: "Horizontal / Extensive",
+      body: "把已經成功的東西複製出去（copy success），對應的是「全球化」。",
+      flow: ["已成功的事物", "複製成功（copy success）", "全球化"]
+    },
+    {
+      name: "垂直進步（0 → 1）",
+      badge: "Vertical / Intensive",
+      body: "開發出從未存在的新事物，對應的是「科技」。",
+      flow: ["0", "開發新事物", "1", "科技"]
+    },
+    {
+      name: "新創必備",
+      badge: "新思維 × 小規模",
+      body: "新創需要「新思維」與「小規模」——規模小，才有思考空間。",
+      flow: ["新思維", "小規模", "有思考空間"]
+    }
+  ]
+};
+
+const CH_ZERO_1999 = {
+  id: "ch_zero_1999",
+  title: "1999年的教訓",
+  seal: "1999|教訓",
+  number: 2,
+  date: "2026年11月9日",
+  keywords: ["網路泡沫", "循序漸進", "保持精簡", "反向信條", "非主流觀念", "自己思考", "未來不確定"],
+  notes: `一、網路泡沫學到的教訓！！！\n1. 循序漸進 → 想改變世界的人要 humble（謙虛）\n2. 保持精簡有彈性\n3. 面對競爭求取進步 → 改善成功產品、爭奪既有產品\n4. 專注在產品，而非銷售 → focus on 產品研發\n\n二、創業四大信條（反）\n1. 大膽冒險比無聊瑣碎好\n2. Bad plan is better than No Plan\n3. 競爭社會讓人走到盡頭\n4. 銷售和產品一樣重要\n\n三、思考方式\n• 找出能讓大眾產生妄想的看法\n   → 就能找出隱藏在背後的「非主流觀念（反）」\n• 保持思路清晰 → 不跟風\n• 未來是不確定的\n\n【書中劃線】最與眾不同的作法是別和群眾唱反調，但要自己思考。`,
+  tactics: [
+    { ctx: "想改變世界", main: "循序漸進，保持 humble", sub: "網路泡沫教訓 ①" },
+    { ctx: "經營公司", main: "保持精簡、有彈性", sub: "網路泡沫教訓 ②" },
+    { ctx: "面對競爭", main: "求取進步：改善成功產品、爭奪既有產品", sub: "網路泡沫教訓 ③" },
+    { ctx: "資源分配", main: "專注在產品，而非銷售", sub: "網路泡沫教訓 ④：focus on 產品研發" },
+    { ctx: "反過來看", main: "創業四大信條（反）", sub: "大膽冒險比無聊瑣碎好；Bad plan 勝過 No plan；競爭社會讓人走到盡頭；銷售和產品一樣重要" },
+    { ctx: "找機會時", main: "找出能讓大眾產生妄想的看法", sub: "就能找出隱藏在背後的「非主流觀念」" },
+    { ctx: "面對群眾", main: "保持思路清晰，不跟風", sub: "最與眾不同的作法是別和群眾唱反調，但要自己思考" },
+    { ctx: "看待未來", main: "未來是不確定的", sub: "" }
+  ],
+  techniques: [
+    {
+      name: "網路泡沫的四個教訓",
+      badge: "1999 的教訓",
+      body: "網路泡沫之後大家學到的四條教訓。",
+      flow: ["循序漸進（要 humble）", "保持精簡有彈性", "面對競爭求取進步", "專注產品而非銷售"]
+    },
+    {
+      name: "創業四大信條（反）",
+      badge: "反向思考",
+      body: "與泡沫教訓相對照的四大信條：大膽冒險比無聊瑣碎好；Bad plan is better than No Plan；競爭社會讓人走到盡頭；銷售和產品一樣重要。",
+      flow: ["大膽冒險比無聊瑣碎好", "Bad plan > No plan", "競爭社會讓人走到盡頭", "銷售和產品一樣重要"]
+    },
+    {
+      name: "找出非主流觀念",
+      badge: "思考方式",
+      body: "找出能讓大眾產生妄想的看法，就能找出隱藏在背後的「非主流觀念」。保持思路清晰、不跟風——別和群眾唱反調，但要自己思考。",
+      flow: ["找出讓大眾產生妄想的看法", "找出背後的非主流觀念", "保持思路清晰，不跟風", "自己思考"]
+    }
+  ]
+};
+
+const CH_ZERO_MONOPOLY = {
+  id: "ch_zero_monopoly",
+  title: "打造有創意的獨佔企業",
+  seal: "創意|獨佔",
+  number: 3,
+  date: "2026年11月9日",
+  keywords: ["創造價值", "獨佔", "完全競爭", "均衡＝靜態", "解決獨特問題", "掩飾與自欺"],
+  notes: `• 均衡意味靜態，靜態意味死亡\n\n一、打造有創意的獨佔企業\n• 創造產值 ✗ → 競爭\n   創造價值 ✓ → 獨佔\n• 完全競爭 → 經濟學理想狀態\n   獨佔 → 創造價值，能創造永久並留得住的價值 → 帶動社會、科技進步\n\n二、獨佔者與非獨佔者的說法\n• 獨佔者透過掩飾獨佔地位以自保\n• 非獨佔者因低估競爭（自欺）以致說謊 → 很可能倒閉、被取代\n\n【書中劃線】\n• 每個成功企業都恰好做到「別人做不到的事」，獨占是每個成功企業的寫照。\n• 成功的企業長得都不一樣，每家公司靠解決一個獨特的問題而贏得獨占地位；倒閉的企業則都一樣，無法從競爭中逃脫。`,
+  tactics: [
+    { ctx: "定位企業", main: "創造價值 → 獨佔，而不是創造產值 → 競爭", sub: "創造產值 ✗ → 競爭；創造價值 ✓ → 獨佔" },
+    { ctx: "看待均衡", main: "均衡意味靜態，靜態意味死亡", sub: "" },
+    { ctx: "看完全競爭", main: "那只是經濟學的理想狀態", sub: "獨佔才能創造永久並留得住的價值，帶動社會、科技進步" },
+    { ctx: "想成功", main: "做到「別人做不到的事」", sub: "獨占是每個成功企業的寫照；靠解決一個獨特的問題贏得獨占地位" },
+    { ctx: "聽獨佔者說話", main: "他會掩飾獨佔地位以自保", sub: "" },
+    { ctx: "聽非獨佔者說話", main: "他會低估競爭（自欺）而說謊", sub: "很可能倒閉、被取代" }
+  ],
+  techniques: [
+    {
+      name: "產值 vs. 價值",
+      badge: "核心對照",
+      body: "創造產值 ✗ → 落入競爭；創造價值 ✓ → 走向獨佔。",
+      flow: ["創造產值 → 競爭（✗）", "創造價值 → 獨佔（✓）"]
+    },
+    {
+      name: "獨佔帶動進步",
+      badge: "獨佔的價值",
+      body: "完全競爭只是經濟學的理想狀態；獨佔能創造永久並留得住的價值，進而帶動社會與科技進步。",
+      flow: ["獨佔", "創造永久並留得住的價值", "帶動社會、科技進步"]
+    },
+    {
+      name: "成功企業各不相同",
+      badge: "書中劃線",
+      body: "每個成功企業都恰好做到「別人做不到的事」；成功的企業長得都不一樣，每家公司靠解決一個獨特的問題而贏得獨占地位；倒閉的企業則都一樣，無法從競爭中逃脫。",
+      flow: ["解決一個獨特的問題", "做到別人做不到的事", "贏得獨占地位"]
+    },
+    {
+      name: "兩種說謊",
+      badge: "獨佔者 vs. 非獨佔者",
+      body: "獨佔者透過掩飾獨佔地位以自保；非獨佔者因低估競爭（自欺）以致說謊，很可能倒閉、被取代。",
+      flow: []
+    }
+  ]
+};
+
 function ensureBookChapters(data, bookDef, chapters) {
   if (!Array.isArray(data.appliedSeeds)) data.appliedSeeds = [];
   const applied = data.appliedSeeds;
@@ -3127,6 +3249,18 @@ function migrateMensa(data) {
       [CH_MENSA_SMART, '頂尖聰明人'],
       [CH_MENSA_HABITS, '時時留意'],
       [CH_MENSA_TIME, '時間規劃']
+    ]
+  );
+}
+
+/* 《從0到1》— 新增章節時在陣列加一行即可 */
+function migrateZeroToOne(data) {
+  return ensureBookChapters(data,
+    { match: '從0到1', id: 'book_zero_to_one', title: '從0到1', author: '彼得．提爾' },
+    [
+      [CH_ZERO_FUTURE, '未來的挑戰'],
+      [CH_ZERO_1999, '1999'],
+      [CH_ZERO_MONOPOLY, '獨佔企業']
     ]
   );
 }
@@ -3234,6 +3368,7 @@ async function seedAndMigrate() {
   if (migrateMuskBible(data)) changed = true;
   if (migrateMMT(data)) changed = true;
   if (migrateMensa(data)) changed = true;
+  if (migrateZeroToOne(data)) changed = true;
 
   if (changed) await saveData(data);
   return data;
