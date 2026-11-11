@@ -76,6 +76,18 @@
   }
   .nav-btn:active { background: var(--red-light); }
 
+  /* ── AI 助理入口（agentXagent）── */
+  .nav-right { display: flex; align-items: center; gap: 4px; }
+  .nav-ai {
+    display: inline-flex; align-items: center; gap: 5px;
+    height: 32px; padding: 0 12px; border-radius: 999px;
+    border: 0.5px solid var(--red-mid); background: var(--red-light);
+    color: var(--red); font: 500 13px/1 var(--sans); letter-spacing: 0.04em;
+    cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  }
+  .nav-ai:hover { border-color: var(--red); }
+  .nav-ai:active { background: var(--red-mid); }
+
   /* ── VIEWS ── */
   .view { display: none; }
   .view.active { display: block; }
@@ -1462,8 +1474,15 @@
 <nav class="nav">
   <button class="nav-btn" id="nav-back" onclick="navBack()" style="display:none;">&#8592;</button>
   <span class="nav-title" id="nav-title">讀書日誌</span>
-  <button class="nav-btn" id="nav-add" onclick="navAdd()">&#43;</button>
+  <div class="nav-right">
+    <button class="nav-ai" type="button" data-axa-agent="reader" data-axa-theme="light" aria-label="開啟讀書助理">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8l1.5 3.9 3.9 1.5-3.9 1.5L8 12.6 6.5 8.7 2.6 7.2l3.9-1.5L8 1.8z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M12.6 11.4l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6.6-1.5z" fill="currentColor"/></svg>
+      <span>助理</span>
+    </button>
+    <button class="nav-btn" id="nav-add" onclick="navAdd()">&#43;</button>
+  </div>
 </nav>
+<script src="https://agentcns.vercel.app/embed.js" defer></script>
 
 <!-- ═══════════════ VIEW: HOME ═══════════════ -->
 <div class="view active" id="view-home">
