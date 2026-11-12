@@ -1667,8 +1667,22 @@ function startRealtimeSync() {
       // Re-render current view silently
       if (state.view === 'home') renderHome();
       else if (state.view === 'book') renderBook();
+      else if (state.view === 'chapter') {
+        // 助理在畫面上改了這一章 → 原地更新，不跳回頂端
+        const y = window.scrollY;
+        renderChapter();
+        if (state.chapterTab === 'viz') renderChapterViz();
+        window.scrollTo(0, y);
+      }
     }
   }, (err) => console.warn('Snapshot error', err));
+
+  // 版面樣式層（agentXagent 助理在畫面上調整的樣式，存在 journal/style，可審核、可復原）
+  onSnapshot(doc(db, 'journal', 'style'), (snap) => {
+    let el = document.getElementById('axa-style');
+    if (!el) { el = document.createElement('style'); el.id = 'axa-style'; document.head.appendChild(el); }
+    el.textContent = (snap.exists() && snap.data().css) || '';
+  }, (err) => console.warn('Style snapshot error', err));
 }
 
 /* ─────────── DEFAULT CHAPTERS ─────────── */
@@ -3626,6 +3640,15 @@ async function seedAndMigrate() {
 
 /* ─────────── STATE ─────────── */
 let state = { view: 'home', bookId: null, chapterId: null, chapterTab: 'notes', history: [] };
+
+/* agentXagent 畫面助理：只讀，告訴助理現在停在哪本書／哪一章 */
+window.AXA = {
+  context() {
+    const b = currentBook(), c = currentChapter();
+    return { view: state.view, tab: state.chapterTab, book: b ? b.title : '', book_id: b ? b.id : null,
+             chapter: c ? c.title : '', chapter_id: c ? c.id : null };
+  }
+};
 
 /* ─────────── NAV ─────────── */
 function showView(name, pushHistory = true) {
