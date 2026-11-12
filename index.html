@@ -86,6 +86,13 @@
     cursor: pointer; transition: background 0.15s, border-color 0.15s;
   }
   .nav-ai:hover { border-color: var(--red); }
+  .nav-login {
+    height: 32px; padding: 0 12px; border-radius: 999px; border: 0.5px solid var(--border, rgba(0,0,0,.15));
+    background: transparent; color: inherit; font: 500 13px/1 var(--sans); cursor: pointer; opacity: .75;
+  }
+  .nav-login:hover { opacity: 1; }
+  /* 只有主人（登入且通過權限確認）才看得到編輯入口；資料庫規則另外把關 */
+  body.rj-ro #nav-add, body.rj-ro #add-book-btn, body.rj-ro .add-chapter-btn, body.rj-ro .danger-zone { display: none !important; }
   .nav-ai:active { background: var(--red-mid); }
 
   /* ── VIEWS ── */
@@ -1465,7 +1472,7 @@
 
 </style>
 </head>
-<body>
+<body class="rj-ro">
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -1479,6 +1486,7 @@
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8l1.5 3.9 3.9 1.5-3.9 1.5L8 12.6 6.5 8.7 2.6 7.2l3.9-1.5L8 1.8z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M12.6 11.4l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6.6-1.5z" fill="currentColor"/></svg>
       <span>助理</span>
     </button>
+    <button class="nav-login" id="nav-login" type="button" onclick="rjLoginClick()" title="主人登入後才能編輯">登入</button>
     <button class="nav-btn" id="nav-add" onclick="navAdd()">&#43;</button>
   </div>
 </nav>
@@ -1511,7 +1519,7 @@
   </div>
   <div class="section-head">書架</div>
   <div id="book-list"></div>
-  <button class="add-book-btn" onclick="showAddBook()">&#43; 新增書本</button>
+  <button class="add-book-btn" id="add-book-btn" onclick="showAddBook()">&#43; 新增書本</button>
   <button class="add-book-btn" onclick="exportKnowledge()" title="把所有書與章節匯出成一份 Markdown，給 Claude 當知識庫">&#8681; 匯出知識庫（Markdown）</button>
   <div class="bottom-pad"></div>
 </div>
@@ -1616,6 +1624,7 @@
 /* ─────────── FIREBASE SETUP ─────────── */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCc9aI4NjL5CDSoALoQKKTCZPxDz1D0Tqg",
@@ -1630,6 +1639,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const DATA_DOC = doc(db, 'journal', 'main');
+
+/* ─────────── 主人登入（只有主人能寫入；其他人只能看）─────────── */
+const auth = getAuth(app);
+let _isOwner = false;
+let _quietWrites = false;   // 開機時的自動整理：訪客寫不進去時不跳提示
+async function rjCheckOwner(user) {
+  if (!user) return false;
+  try { return (await getDoc(doc(db, 'config', 'owner'))).exists(); }  // 規則只讓主人讀這份
+  catch (e) { return false; }
+}
+function rjApplyAuth(user) {
+  document.body.classList.toggle('rj-ro', !_isOwner);
+  const b = document.getElementById('nav-login');
+  if (!b) return;
+  b.textContent = !user ? '登入' : (_isOwner ? '主人 · 登出' : '登出');
+  b.title = !user ? '主人登入後才能編輯' : (user.email || '') + (_isOwner ? '' : '（這個帳號沒有編輯權限）');
+}
+const authReady = new Promise((resolve) => {
+  let first = true;
+  onAuthStateChanged(auth, async (user) => {
+    _isOwner = await rjCheckOwner(user);
+    rjApplyAuth(user);
+    if (first) { first = false; resolve(); }
+    else if (_isOwner) { try { await seedAndMigrate(); } catch (e) {} }
+  });
+});
+window.rjLoginClick = async () => {
+  try {
+    if (auth.currentUser) { await signOut(auth); showToast('已登出，現在是唯讀模式'); return; }
+    await signInWithPopup(auth, new GoogleAuthProvider());
+    setTimeout(() => showToast(_isOwner ? '✓ 已登入，可以編輯了' : '這個帳號沒有編輯權限，只能瀏覽'), 400);
+  } catch (e) {
+    console.warn('login failed', e);
+    if (e && e.code !== 'auth/popup-closed-by-user') showToast('⚠️ 登入失敗：' + (e.code || e.message));
+  }
+};
 
 /* ─────────── IN-MEMORY CACHE ─────────── */
 let _cache = { books: [] };
@@ -1646,6 +1691,10 @@ async function loadData() {
 }
 
 async function saveData(data) {
+  if (!_isOwner) {
+    if (!_quietWrites) { showToast('🔒 主人登入後才能編輯'); loadData().then(() => { if (state.view === 'home') renderHome(); else if (state.view === 'book') renderBook(); }); }
+    return;
+  }
   _cache = data;
   try {
     await setDoc(DATA_DOC, data);
@@ -4841,6 +4890,7 @@ async function qzLoadData() {
 
 async function qzSave(silent) {
   try { localStorage.setItem(QZ_LS, JSON.stringify(qzData)); } catch (e) {}
+  if (!_isOwner) return;   // 訪客的成績只存在自己的裝置，不蓋掉主人的紀錄
   try {
     await setDoc(QUIZ_DOC, qzData);
   } catch (e) {
@@ -5222,7 +5272,9 @@ async function init() {
   // Show loading
   document.getElementById('book-list').innerHTML = `<div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-title">載入中...</div><div class="empty-sub">正在從雲端讀取資料</div></div>`;
 
-  await seedAndMigrate();
+  await authReady;
+  _quietWrites = true;
+  try { await seedAndMigrate(); } finally { _quietWrites = false; }
   renderHome();
   startRealtimeSync();
 }
